@@ -7,6 +7,17 @@ from geoalchemy2 import (Geometry, Geography)
 
 db = SQLAlchemy()
 
+# class test_table(db.Model):
+#     __tablename__ = "testing"
+#     user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+#     email = db.Column(db.String,nullable=False, unique=True)
+#     password = db.Column(db.String,nullable=False)
+
+
+#     def __repr__(self):
+#         return f'<user_id:{self.user_id} email:{self.email}>'
+
+
 class User(db.Model):
     """A parent, address, email, password, address and its geospatial data."""
 
@@ -28,10 +39,15 @@ class User(db.Model):
     
     car = db.relationship('Car')
     children = db.relationship('Child')
-    requests = db.relationship('Request')
+    # 'requestedusers' = db.relationship('Request') backref from Requests
+    # 'responsedusers' = db.relationship('Request') backref from Requests
+# test_user = User(email = 'user1@test.com',password = '123', household1 = 'User1',
+#                  household2 = 'User2', phone_number = '415-340-4344',
+#                  address_street = '3 Adrian Way',address_city ='San rafael',
+#                  address_state = 'CA',address_zip ='94903')
 
     def __repr__(self):
-        return f'<user_id {self.user_id} email{self.email}, address_geo{self.address_geo}'
+        return f'<user_id:{self.user_id} email:{self.email}, address_geo:{self.address_geo}>'
 
 class Car(db.Model):
     """Details of a car owned by a parent """
@@ -50,7 +66,7 @@ class Car(db.Model):
     users = db.relationship('User')
 
     def __repr__(self):
-        return f'<car_id {self.car_id} user_id{self.user_id}, license_plate{self.license_plate}'
+        return f'<car_id:{self.car_id} user_id:{self.user_id}, license_plate:{self.license_plate}'
 
 
 class Child(db.Model):
@@ -66,7 +82,7 @@ class Child(db.Model):
     users = db.relationship('User')
 
     def __repr__(self):
-        return f'<child_id {self.child_id} user_id{self.user_id}, name{self.name}'
+        return f'<child_id:{self.child_id} user_id:{self.user_id}, name:{self.name}'
 
 
 class Request(db.Model):
@@ -84,7 +100,8 @@ class Request(db.Model):
     request_datetime =  db.Column(db.DateTime)
     response_dateime =  db.Column(db.DateTime)
 
-    users = db.relationship('User')
+    from_request = db.relationship('User', foreign_keys=[from_user], backref = 'requestedusers')
+    response_request = db.relationship('User', foreign_keys=[to_user], backref = 'responsedusers')
 
     def __repr__(self):
         return f'<request_id {self.request_id} from_user{self.from_user}, to_user{self.to_user}, request_status{self.request_status}'
@@ -110,4 +127,5 @@ if __name__ == '__main__':
     # query it executes.
     connect_to_db(app)
     # CREATE EXTENSION postgis; - run this inside the database
-    db.create_all()
+    # db.create_all()
+   
