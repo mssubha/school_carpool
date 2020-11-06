@@ -11,10 +11,17 @@ def create_user(email, password, household1, household2, phone_number,
     user = User(email=email, password=password, household1=household1,
                 household2=household2, phone_number=phone_number,
                 address_street=address_street, address_city=address_city,
-                address_state=address_state,address_zip=address_zip)
+                address_state=address_state,address_zip=address_zip,address_latitude =0,
+                address_longitude =0)
 
-# create_user("user1@test.com","123","User1","User2","415-340-4344","3 Adrian Way","San rafael","CA","94903")
-#     db.session.add(user)
+# User(email = 'user3@test.com',password = '123', household1 = 'User3',
+# ... household2 = 'User2', phone_number = '415-340-2334',
+# ... address_street = '3 Adrian Way',address_city ='San Francisco',
+# ... address_state = 'CA',address_zip ='94903',address_latitude=0,address_longitude =0)
+
+# create_user("user15@test.com","help","Usertets","User2","415-340-4224","21 Labrea","Foster City","CA","94253")
+    
+    db.session.add(user)
     db.session.commit()
 
     return user

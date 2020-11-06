@@ -41,10 +41,10 @@ class User(db.Model):
     children = db.relationship('Child')
     # 'requestedusers' = db.relationship('Request') backref from Requests
     # 'responsedusers' = db.relationship('Request') backref from Requests
-# test_user = User(email = 'user1@test.com',password = '123', household1 = 'User1',
+# test_user = User(email = 'user3@test.com',password = '123', household1 = 'User3',
 #                  household2 = 'User2', phone_number = '415-340-4344',
 #                  address_street = '3 Adrian Way',address_city ='San rafael',
-#                  address_state = 'CA',address_zip ='94903')
+#                  address_state = 'CA',address_zip ='94903',address_latitude=0,address_longitude =0)
 
     def __repr__(self):
         return f'<user_id:{self.user_id} email:{self.email}, address_geo:{self.address_geo}>'
