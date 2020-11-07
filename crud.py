@@ -59,6 +59,23 @@ def get_car_by_id(user_id):
     """ Return user by id"""
     return Car.query.get(user_id)
 
+def create_user_child(user_id, name, grade):
+
+    child = Child(user_id = user_id,name = name,grade = grade)
+
+    db.session.add(child)
+    db.session.commit()
+
+    return child
+
+def get_children():
+    """ Return all cars"""
+    return Child.query.all()
+
+def get_children_of_user(user_id):
+    """ Return user by id"""
+    return Child.query.filter_by(user_id=user_id).all()
+
 if __name__ == '__main__':
     from server import app
     connect_to_db(app)

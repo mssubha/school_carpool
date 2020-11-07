@@ -82,7 +82,7 @@ class Child(db.Model):
     users = db.relationship('User')
 
     def __repr__(self):
-        return f'<child_id:{self.child_id} user_id:{self.user_id}, name:{self.name}'
+        return f'<child_id:{self.child_id} user_id:{self.user_id}, name:{self.name}>'
 
 
 class Request(db.Model):
