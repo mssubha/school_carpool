@@ -26,8 +26,6 @@ def create_user(email, password, household1, household2, phone_number,
 
     return user
 
-# test_user = create_user("test@test.test","123")
-
 def get_users():
     """ Return all users"""
     return User.query.all()
@@ -42,6 +40,27 @@ def get_user_by_email(email):
     # if doesn't return None
     return User.query.filter(User.email == email).first()
 
+def create_user_car(user_id,car_make,car_model,license_plate,smoking,pets,seats):
+
+    car = Car(user_id = user_id,car_make = car_make,car_model = car_model,
+              license_plate = license_plate, smoking = smoking,
+              pets = pets, seats = seats)
+
+    db.session.add(car)
+    db.session.commit()
+
+    return car
+
+def get_cars():
+    """ Return all cars"""
+    return Car.query.all()
+
+def get_car_by_id(user_id):
+    """ Return user by id"""
+    return Car.query.get(user_id)
+
 if __name__ == '__main__':
     from server import app
     connect_to_db(app)
+
+    # pg_dump carpool > carpool.sql
