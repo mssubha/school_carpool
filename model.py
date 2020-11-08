@@ -33,8 +33,8 @@ class User(db.Model):
     address_city = db.Column(db.String,nullable=False)
     address_state = db.Column(db.String,nullable=False)
     address_zip = db.Column(db.String,nullable=False)
-    address_latitude = db.Column(db.Float)
-    address_longitude = db.Column(db.Float)
+    address_latitude = db.Column(db.Float, default = 0)
+    address_longitude = db.Column(db.Float, default = 0)
     address_geo = db.Column(Geometry(geometry_type="POINT"))
     
     car = db.relationship('Car')
@@ -89,7 +89,7 @@ class Request(db.Model):
     """ Accept of Denial of a carpool request """
 
     __tablename__ = "requests"
-
+    
     request_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     from_user = db.Column(db.Integer,db.ForeignKey('users.user_id'))
     to_user = db.Column(db.Integer,db.ForeignKey('users.user_id'))
@@ -97,8 +97,9 @@ class Request(db.Model):
     request_note = db.Column(db.Text)
     decision_note = db.Column(db.Text)
     request_status = db.Column(db.String)
-    request_datetime =  db.Column(db.DateTime)
-    response_dateime =  db.Column(db.DateTime)
+    request_datetime =  db.Column(db.DateTime, default=datetime.now()) #dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+    response_dateime =  db.Column(db.DateTime,default = None)
+
 
     from_request = db.relationship('User', foreign_keys=[from_user], backref = 'requestedusers')
     response_request = db.relationship('User', foreign_keys=[to_user], backref = 'responsedusers')
@@ -106,7 +107,7 @@ class Request(db.Model):
     def __repr__(self):
         return f'<request_id {self.request_id} from_user{self.from_user}, to_user{self.to_user}, request_status{self.request_status}'
 
-
+# request1 = Request(from_user=1,to_user=2,child_id =1,request_note="can we?",decision_note = " ",request_status = "S")
 
 def connect_to_db(flask_app, db_uri='postgresql:///carpool', echo=True):
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri

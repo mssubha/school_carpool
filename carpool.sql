@@ -253,6 +253,8 @@ COPY public.cars (car_id, user_id, car_make, car_model, license_plate, smoking, 
 --
 
 COPY public.children (child_id, user_id, name, grade) FROM stdin;
+1	1	Alice	4
+3	1	Savannah	2
 \.
 
 
@@ -294,7 +296,7 @@ SELECT pg_catalog.setval('public.cars_car_id_seq', 2, true);
 -- Name: children_child_id_seq; Type: SEQUENCE SET; Schema: public; Owner: vagrant
 --
 
-SELECT pg_catalog.setval('public.children_child_id_seq', 1, false);
+SELECT pg_catalog.setval('public.children_child_id_seq', 3, true);
 
 
 --

@@ -51,6 +51,32 @@ def create_user_car(user_id,car_make,car_model,license_plate,smoking,pets,seats)
 
     return car
 
+def create_request(from_user,to_user,child_id,request_note,decision_note,request_status,request_datetime):
+
+    if (request_status == 'S'):
+        request_datetime =  datetime.now() #dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+        response_dateime = None
+    else:
+        response_dateime =   datetime.now()
+
+
+    request = Request(from_user = from_user,
+    to_user = to_user,
+    child_id = child_id,
+    request_note = request_note,
+    decision_note = decision_note,
+    request_status = request_status,
+    request_datetime=request_datetime,
+    response_dateime = response_dateime)
+
+    db.session.add(request)
+    db.session.commit()
+
+    return request
+ 
+# >>> from datetime import datetime
+# >>> create_request(1,2,3,"Test CRUD request","","S",datetime.now())
+
 def get_cars():
     """ Return all cars"""
     return Car.query.all()
@@ -81,3 +107,4 @@ if __name__ == '__main__':
     connect_to_db(app)
 
     # pg_dump carpool > carpool.sql
+    # psql carpool < carpool.sql
