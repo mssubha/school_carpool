@@ -4,20 +4,17 @@
 
 {% block body %}
 
-<!-- .new_user{ 
-    padding-left: 10px; 
-    padding-right: 20px; 
-    padding-top: 30px; 
-    padding bottom: 10px; 
-} -->
+<form action="/create_user" method="POST"> 
 
-<form action="/new_user" method="POST"> 
-
-    <div class="new_user">   
-        <label>Name : </label>   
-        <input type="text" placeholder="Enter name" name="name" required> <br><br>
+    <div class="new_user">  
         <label>Email : </label>  
-        <input type="text" placeholder="Enter email" name="email" required> <br><br> 
+        <input type="text" placeholder="Enter email" name="email" required> 
+        <label>Password : </label>  
+        <input type="password" placeholder="Enter password" name="password" required> <br><br> 
+        <label>Household1 : </label>   
+        <input type="text" placeholder="Enter name" name="name1" required> 
+        <label>Household2 : </label>   
+        <input type="text" placeholder="Enter name" name="name2" required> <br><br>
         <label>Phone Number : </label>  
         <input type="text" placeholder="Enter phone number" name="phone" required> <br><br>
         <label>Street : </label>  
@@ -77,16 +74,37 @@
             <option value="WV">West Virginia</option>
             <option value="WI">Wisconsin</option>
             <option value="WY">Wyoming</option>
-        </select>	<br><br>
-        
+        </select>	
+        <label>Zip Code : </label>  
+        <input type="text" placeholder="Enter zip Code" name="zipcode" required> <br><br>
+
         <label>Car Make : </label>  
-        <input type="text" placeholder="Car Make" name="carmake" required> 
+        <input type="text" placeholder="Enter Car Make" name="carmake" required> 
         <label>Car Model : </label>  
-        <input type="text" placeholder="Car Model" name="carmodel" required>  
+        <input type="text" placeholder="Enter Car Model" name="carmodel" required>  
         <label>License Plate : </label>  
-        <input type="text" placeholder="License Plate" name="licenseplate" required> <br><br> 
+        <input type="text" placeholder="EnterLicense Plate" name="licenseplate" required> <br><br> 
         <label>Seats for Carpool : </label>  
         <input type="text" placeholder="Number of Seats" name="carpoolseats" required> <br><br>
+
+        <label>Smoking:</label>
+        <input type="radio" name="smoking" value=1>
+        <label for="smoking">Yes</label>
+        <input type="radio" name="smoking" value=0>
+        <label for="smoking">No</label> <br><br>
+
+        <label> Pets:</label>
+        <input type="radio" name="pets" value=1>
+        <label for="pets">Yes</label>
+        <input type="radio" name="pets" value=0>
+        <label for="pets">No</label> <br><br>
+       
+        <label>Child Name : </label>  
+        <input type="text" placeholder="Enter Child Name" name="childname" required> 
+        <label>Child Grade : </label>  
+        <input type="text" placeholder="Enter Child Grade" name="childgrade" required> <br><br>
+        
+        <input type ="submit" name="action" value="createuser">
 
     </div>   
 </form>

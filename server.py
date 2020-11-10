@@ -37,6 +37,32 @@ def new_user():
     """ User Registration Page """
     return render_template('newuser.html')
 
+@app.route('/create_user', methods=['POST'])
+def create_user():
+    email = request.form.get('email')
+    password = request.form.get('password')
+    household1 = request.form.get('name1')
+    household2 = request.form.get('name2')
+    phone_number = request.form.get('phone')
+    address_street = request.form.get('street')
+    address_city = request.form.get('city')
+    address_state = request.form.get('state')
+    address_zip = request.form.get('zipcode')
+
+    crud.create_user(email, password, household1, household2, phone_number, 
+                address_street, address_city, address_state, address_zip)
+
+    car_make = request.form.get("carmake")
+    car_model = request.form.get("carmodel")
+    license_plate = request.form.get("licenseplate")
+    seats = request.form.get("carpoolseats")
+    smoking = request.form.get("smoking")
+    pets = request.form.get("pets")
+    
+    crud.create_user_car(email,car_make,car_model,license_plate,smoking,pets,seats)
+    
+    return redirect('/') 
+
 if __name__ == '__main__':
     connect_to_db(app)
     app.run(host='0.0.0.0', debug=True)

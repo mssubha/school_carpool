@@ -40,11 +40,13 @@ def get_user_by_email(email):
     # if doesn't return None
     return User.query.filter(User.email == email).first()
 
-def create_user_car(user_id,car_make,car_model,license_plate,smoking,pets,seats):
-
+def create_user_car(email,car_make,car_model,license_plate,smoking,pets,seats):
+    
+    user = get_user_by_email(email)
+    user_id = user.user_id
     car = Car(user_id = user_id,car_make = car_make,car_model = car_model,
-              license_plate = license_plate, smoking = smoking,
-              pets = pets, seats = seats)
+              license_plate = license_plate, smoking = int(smoking),
+              pets = int(pets), seats = int(seats))
 
     db.session.add(car)
     db.session.commit()
