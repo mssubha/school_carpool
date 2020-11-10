@@ -7,17 +7,6 @@ from geoalchemy2 import (Geometry, Geography)
 
 db = SQLAlchemy()
 
-# class test_table(db.Model):
-#     __tablename__ = "testing"
-#     user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-#     email = db.Column(db.String,nullable=False, unique=True)
-#     password = db.Column(db.String,nullable=False)
-
-
-#     def __repr__(self):
-#         return f'<user_id:{self.user_id} email:{self.email}>'
-
-
 class User(db.Model):
     """A parent, address, email, password, address and its geospatial data."""
 

@@ -4,14 +4,20 @@
 
 {% block body %}
 
-<form>  
+<form action="/login" method="POST"> 
     <div class="login">   
         <label>Username : </label>   
         <input type="text" placeholder="Enter email" name="username" required>  
         <label>Password : </label>  
         <input type="password" placeholder="Enter Password" name="password" required> <br>  
-        <button type="submit">Login</button>  <br> 
-        <a href="/templates/new_user.html"> New User </a>   
+        <!-- <button type="submit">Login</button>  <br>  -->
+        <input type ="submit" name="action" value="Login">
+        <!-- <a href="newuser.html"> New User </a>    -->
     </div>   
-</form>    
+</form>   
+
+<form action="/new_user" method="POST"> 
+    <input type ="submit" name="action" value="newuser">
+</form> 
+
 {% endblock %}
