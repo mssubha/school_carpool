@@ -60,6 +60,10 @@ def create_user():
     pets = request.form.get("pets")
     
     crud.create_user_car(email,car_make,car_model,license_plate,smoking,pets,seats)
+
+    childname = request.form.get("childname")
+    grade = request.form.get("childgrade")
+    crud.create_user_child(email, childname, grade)
     
     return redirect('/') 
 

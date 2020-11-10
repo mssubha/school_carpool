@@ -2,17 +2,31 @@
 
 from model import db, User, Car, Child, Request, connect_to_db
 from datetime import datetime
+import googlemaps
+import os
+import secret
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import func
+from geoalchemy2 import Geometry, Geography
 
 
 def create_user(email, password, household1, household2, phone_number, 
                 address_street, address_city, address_state, address_zip):
     """Create and return a new user."""
+    api_key = secret.google_api_key
+    gmaps_client = googlemaps.Client(api_key)
+    address = (f'{address_street} {address_city} {address_state}')
+    geocode_result = gmaps_client.geocode(address)
+    result = geocode_result[0]
+    latitude = result['geometry']['location']['lat']
+    longitude = result['geometry']['location']['lng']
 
     user = User(email=email, password=password, household1=household1,
                 household2=household2, phone_number=phone_number,
                 address_street=address_street, address_city=address_city,
-                address_state=address_state,address_zip=address_zip,address_latitude =0,
-                address_longitude =0)
+                address_state=address_state,address_zip=address_zip,address_latitude =latitude,
+                address_longitude =longitude)
 
 # User(email = 'user3@test.com',password = '123', household1 = 'User3',
 # ... household2 = 'User2', phone_number = '415-340-2334',
@@ -32,6 +46,7 @@ def get_users():
 
 def get_user_by_id(user_id):
     """ Return user by id"""
+    
     return User.query.get(user_id)
 
 def get_user_by_email(email):
@@ -87,9 +102,12 @@ def get_car_by_id(user_id):
     """ Return user by id"""
     return Car.query.get(user_id)
 
-def create_user_child(user_id, name, grade):
+def create_user_child(email, childname, grade):
 
-    child = Child(user_id = user_id,name = name,grade = grade)
+    user = get_user_by_email(email)
+    user_id = user.user_id
+
+    child = Child(user_id = user_id,name = childname,grade = grade)
 
     db.session.add(child)
     db.session.commit()
