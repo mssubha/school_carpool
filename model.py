@@ -116,6 +116,7 @@ if __name__ == '__main__':
     # too annoying; this will tell SQLAlchemy not to print out every
     # query it executes.
     connect_to_db(app)
+    # source secrets.sh
     # CREATE EXTENSION postgis; - run this inside the database
     # db.create_all()
    

@@ -2,3 +2,4 @@ env
 .DS_Store
 __pycache__/
 secret.py
+secrets.sh

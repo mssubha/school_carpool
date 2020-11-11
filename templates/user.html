@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Kids Carpool - Go Green and Have Fun!{% endblock %}
+
+{% block body %}
+<h2> Your carpool buddies</h2>
+<form action="/search_carpool" method="POST"> 
+    <div class="search">   
+        <input type ="submit" name="search" value="Search for Carpool">
+    </div>   
+</form>   
+
+<form action="/accept_deny_request" method="POST"> 
+    <div class="search">   
+        <input type ="submit" name="response" value="Accept Deny Request">
+    </div>   
+</form> 
+
+{% endblock %}

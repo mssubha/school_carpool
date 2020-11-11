@@ -17,7 +17,7 @@ def homepage():
     
     return render_template('homepage.html')
     
-@app.route('/login', methods=['POST'])   
+@app.route('/user', methods=['POST'])   
 def user_login():
     """ Validate Login"""
     # if (request.form.get('action') == 'Login'):

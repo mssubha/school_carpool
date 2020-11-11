@@ -10,11 +10,11 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func
 from geoalchemy2 import Geometry, Geography
 
-
 def create_user(email, password, household1, household2, phone_number, 
                 address_street, address_city, address_state, address_zip):
     """Create and return a new user."""
-    api_key = secret.google_api_key
+    # api_key = secret.google_api_key
+    api_key = os.environ['google_api_key'] 
     gmaps_client = googlemaps.Client(api_key)
     address = (f'{address_street} {address_city} {address_state}')
     geocode_result = gmaps_client.geocode(address)
