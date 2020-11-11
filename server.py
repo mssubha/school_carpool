@@ -24,10 +24,12 @@ def user_login():
     password = request.form.get('password')
     existing_user = crud.get_user_by_email(email)
     
-    if existing_user == None:
+    if (existing_user == None):
         flash("User not found. Create an account")
+    elif (crud.check_login_details(email,password) == False):
+        flash ("Invalid Password")
     else:
-        flash ("Logged in")
+        flash ("Login Successful")
 
     return redirect('/') 
 

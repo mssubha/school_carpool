@@ -30,13 +30,6 @@ def create_user(email, password, household1, household2, phone_number,
                 address_state=address_state,address_zip=address_zip,address_latitude =latitude,
                 address_longitude =longitude,address_geo=geo)
 
-# User(email = 'user3@test.com',password = '123', household1 = 'User3',
-# ... household2 = 'User2', phone_number = '415-340-2334',
-# ... address_street = '3 Adrian Way',address_city ='San Francisco',
-# ... address_state = 'CA',address_zip ='94903',address_latitude=0,address_longitude =0)
-
-# create_user("user15@test.com","help","Usertets","User2","415-340-4224","21 Labrea","Foster City","CA","94253")
-    
     db.session.add(user)
     db.session.commit()
 
@@ -48,7 +41,6 @@ def get_users():
 
 def get_user_by_id(user_id):
     """ Return user by id"""
-    
     return User.query.get(user_id)
 
 def get_user_by_email(email):
@@ -57,8 +49,13 @@ def get_user_by_email(email):
     # if doesn't return None
     return User.query.filter(User.email == email).first()
 
+def check_login_details(email,password):
+    login_user = get_user_by_email(email)
+    return (login_user.password == (password))
+
+
 def create_user_car(email,car_make,car_model,license_plate,smoking,pets,seats):
-    
+    """ Enter car details of the user """
     user = get_user_by_email(email)
     user_id = user.user_id
     car = Car(user_id = user_id,car_make = car_make,car_model = car_model,
@@ -69,6 +66,37 @@ def create_user_car(email,car_make,car_model,license_plate,smoking,pets,seats):
     db.session.commit()
 
     return car
+
+def get_cars():
+    """ Return all cars"""
+    return Car.query.all()
+
+def get_car_by_id(user_id):
+    """ Return user by id"""
+    return Car.query.get(user_id)
+
+
+
+def create_user_child(email, childname, grade):
+    """ Create a record for each child of the user """
+    user = get_user_by_email(email)
+    user_id = user.user_id
+
+    child = Child(user_id = user_id,name = childname,grade = grade)
+
+    db.session.add(child)
+    db.session.commit()
+
+    return child
+
+def get_children():
+    """ Return all cars"""
+    return Child.query.all()
+
+def get_children_of_user(user_id):
+    """ Return user by id"""
+    return Child.query.filter_by(user_id=user_id).all()
+
 
 def create_request(from_user,to_user,child_id,request_note,decision_note,request_status,request_datetime):
 
@@ -95,34 +123,6 @@ def create_request(from_user,to_user,child_id,request_note,decision_note,request
  
 # >>> from datetime import datetime
 # >>> create_request(1,2,3,"Test CRUD request","","S",datetime.now())
-
-def get_cars():
-    """ Return all cars"""
-    return Car.query.all()
-
-def get_car_by_id(user_id):
-    """ Return user by id"""
-    return Car.query.get(user_id)
-
-def create_user_child(email, childname, grade):
-
-    user = get_user_by_email(email)
-    user_id = user.user_id
-
-    child = Child(user_id = user_id,name = childname,grade = grade)
-
-    db.session.add(child)
-    db.session.commit()
-
-    return child
-
-def get_children():
-    """ Return all cars"""
-    return Child.query.all()
-
-def get_children_of_user(user_id):
-    """ Return user by id"""
-    return Child.query.filter_by(user_id=user_id).all()
 
 if __name__ == '__main__':
     from server import app

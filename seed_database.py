@@ -15,16 +15,16 @@ import csv
 # os.system('createdb ratings')
 
 model.connect_to_db(server.app)
-# model.db.create_all()
+model.db.create_all()
 
-# with open('data/user.csv', newline='') as user_file:
-#     users = csv.reader(user_file, delimiter=',')
-#     next(users) # to skip the header
-#     for user in users:
-#         email, password, household1, household2, phone_number, address_street, address_city, address_state, address_zip = user
-    
-#         crud.create_user(email, password, household1, household2, phone_number, 
-#                 address_street, address_city, address_state, address_zip)
+with open('data/user.csv', newline='') as user_file:
+    users = csv.reader(user_file, delimiter=',')
+    next(users) # to skip the header
+    for user in users:
+        email, password, household1, household2, phone_number, address_street, address_city, address_state, address_zip = user
+  
+        crud.create_user(email, password, household1, household2, phone_number, 
+                address_street, address_city, address_state, address_zip)
 
 
 with open('data/cars.csv', newline='') as user_file:
