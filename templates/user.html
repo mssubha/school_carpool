@@ -4,6 +4,19 @@
 
 {% block body %}
 <h2> Your carpool buddies</h2>
+
+
+<ul>
+    {% for buddy in buddies %}
+      <li>
+        
+        {{buddy.household1}} {{buddy.address_street}}  {{buddy.address_city}} {{buddy.phone_number}} {{buddy.email}} 
+       
+      </li>
+    {% endfor %}
+  </ul>
+
+
 <form action="/search_carpool" method="POST"> 
     <div class="search">   
         <input type ="submit" name="search" value="Search for Carpool">
@@ -17,3 +30,5 @@
 </form> 
 
 {% endblock %}
+
+

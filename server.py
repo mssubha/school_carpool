@@ -3,6 +3,7 @@ from flask import (Flask, render_template, request, flash, session,
                    redirect)
 from model import connect_to_db
 import crud
+import userqueries
 from jinja2 import StrictUndefined
 import os
 
@@ -33,8 +34,8 @@ def user_login():
         return redirect('/') 
     else:
         session['username'] = email
-        # flash ("Logged in successfully")
-        return render_template('user.html')
+        buddies = userqueries.get_user_buddies(email)
+        return render_template('user.html',buddies=buddies)
 
 
 @app.route('/new_user', methods=['POST'])
