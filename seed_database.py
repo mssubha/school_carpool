@@ -41,3 +41,14 @@ with open('data/children.csv', newline='') as user_file:
     for child in children:
         email, childname, grade = child
         crud.create_user_child(email, childname, grade)
+
+
+
+with open('data/requests.csv', newline='') as user_file:
+    requests = csv.reader(user_file, delimiter=',')
+    next(requests) # to skip the header
+    for request in requests:
+        from_user,to_user,child_id,request_note,decision_note,request_status,request_datetime = request
+        crud.create_request(from_user,to_user,child_id,request_note,decision_note,request_status,request_datetime)
+
+

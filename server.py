@@ -4,6 +4,7 @@ from flask import (Flask, render_template, request, flash, session,
 from model import connect_to_db
 import crud
 from jinja2 import StrictUndefined
+import os
 
 app = Flask(__name__)
 app.secret_key = "dev"
@@ -26,12 +27,14 @@ def user_login():
     
     if (existing_user == None):
         flash("User not found. Create an account")
+        return redirect('/') 
     elif (crud.check_login_details(email,password) == False):
         flash ("Invalid Password")
+        return redirect('/') 
     else:
-        flash ("Login Successful")
-
-    return redirect('/') 
+        session['username'] = email
+        # flash ("Logged in successfully")
+        return render_template('user.html')
 
 
 @app.route('/new_user', methods=['POST'])
@@ -68,6 +71,7 @@ def create_user():
     crud.create_user_child(email, childname, grade)
     
     return redirect('/') 
+
 
 if __name__ == '__main__':
     connect_to_db(app)

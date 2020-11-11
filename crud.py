@@ -100,6 +100,8 @@ def get_children_of_user(user_id):
 
 def create_request(from_user,to_user,child_id,request_note,decision_note,request_status,request_datetime):
 
+# datetime.strptime('2011-01-21 02:37:21', '%Y-%m-%d %H:%M:%S')
+
     if (request_status == 'S'):
         request_datetime =  datetime.now() #dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
         response_dateime = None
