@@ -40,10 +40,12 @@ def user_login():
         return render_template('user.html',buddies=buddies,link=link)
 
 
-@app.route('/search_carpool', methods=['POST'])
+@app.route('/search_carpool' , methods=['POST'])
 def search_carpool():
-    print(session['username'])
-    return render_template('search.html')
+    carpoolers = userqueries.get_carpool_closeby(session['username'])
+    # print(carpool_list)
+    return render_template('search.html', carpoolers = carpoolers)
+
 
 @app.route('/new_user', methods=['POST'])
 def new_user():
@@ -63,7 +65,6 @@ def create_user():
     address_city = request.form.get('city')
     address_state = request.form.get('state')
     address_zip = request.form.get('zipcode')
-
     crud.create_user(email, password, household1, household2, phone_number, 
                 address_street, address_city, address_state, address_zip)
 
@@ -73,7 +74,6 @@ def create_user():
     seats = request.form.get("carpoolseats")
     smoking = request.form.get("smoking")
     pets = request.form.get("pets")
-    
     crud.create_user_car(email,car_make,car_model,license_plate,smoking,pets,seats)
 
     childname = request.form.get("childname")

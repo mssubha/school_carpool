@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Kids Carpool - Go Green and Have Fun!{% endblock %}
+
+{% block body %}
+<h2> Your carpool buddies</h2>
+
+<ul>
+    {% for carpooler in carpoolers %}
+      <li>
+        
+        {{carpooler.household1}} {{carpooler.address_street}}  {{carpooler.address_city}} {{carpooler.phone_number}} {{carpooler.email}} 
+       
+      </li>
+    {% endfor %}
+  </ul>
+
+
+{% endblock %}
+
+

@@ -48,6 +48,11 @@ def get_user_by_email(email):
     # if doesn't return None
     return User.query.filter(User.email == email).first()
 
+def get_user_geo(email):
+    user = get_user_by_email(email)
+    geo = user.address_geo
+    return(geo)
+
 def check_login_details(email,password):
     login_user = get_user_by_email(email)
     return (login_user.password == (password))
