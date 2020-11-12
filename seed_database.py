@@ -11,8 +11,8 @@ import csv
 
 
 
-# os.system('dropdb ratings')
-# os.system('createdb ratings')
+# os.system('dropdb dbcarpool')
+# os.system('createdb dbcarpool')
 
 model.connect_to_db(server.app)
 model.db.create_all()

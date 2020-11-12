@@ -4,7 +4,6 @@ from model import db, User, Car, Child, Request, connect_to_db
 from datetime import datetime
 import googlemaps
 import os
-import secret
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func

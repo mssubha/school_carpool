@@ -1,4 +1,4 @@
-"""Server for movie ratings app."""
+"""Server for movie carpool app."""
 from flask import (Flask, render_template, request, flash, session,
                    redirect)
 from model import connect_to_db
@@ -18,9 +18,10 @@ def homepage():
     
     return render_template('homepage.html')
     
+
 @app.route('/user', methods=['POST'])   
 def user_login():
-    """ Validate Login"""
+    """ Validate Login and Display User Page"""
     # if (request.form.get('action') == 'Login'):
     email = request.form.get('username')
     password = request.form.get('password')
@@ -35,16 +36,24 @@ def user_login():
     else:
         session['username'] = email
         buddies = userqueries.get_user_buddies(email)
-        return render_template('user.html',buddies=buddies)
+        link = userqueries.static_map(email)
+        return render_template('user.html',buddies=buddies,link=link)
 
+
+@app.route('/search_carpool', methods=['POST'])
+def search_carpool():
+    print(session['username'])
+    return render_template('search.html')
 
 @app.route('/new_user', methods=['POST'])
 def new_user():
     """ User Registration Page """
     return render_template('newuser.html')
 
+
 @app.route('/create_user', methods=['POST'])
 def create_user():
+    """ Create New User """
     email = request.form.get('email')
     password = request.form.get('password')
     household1 = request.form.get('name1')
