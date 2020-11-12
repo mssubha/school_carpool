@@ -7,11 +7,12 @@
 
 <ul>
     {% for carpooler in carpoolers %}
-      <li>
+      <ul>
         
+        <input type="radio"  name="carpoolrequest" value= {{ carpooler.user_id }}>
         {{carpooler.household1}} {{carpooler.address_street}}  {{carpooler.address_city}} {{carpooler.phone_number}} {{carpooler.email}} 
        
-      </li>
+      </ul>
     {% endfor %}
   </ul>
 
