@@ -2,8 +2,17 @@
 
 {% block title %}Kids Carpool - Go Green and Have Fun!{% endblock %}
 
+{% block head %}
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwlu-IaYecshl2Ak0bblcLHqDWVwxqEXI&callback=initMap"
+defer
+></script>
+<link rel="stylesheet" type="text/css" href="/static/css/maps.css" />
+<script src="/static/js/display_map.js"></script>
+
+{% endblock %}
+
 {% block body %}
-<h2> Your carpool buddies</h2>
+ <h2> Your carpool buddies</h2>
 
 
 <ul>
@@ -14,10 +23,14 @@
        
       </li>
     {% endfor %}
-  </ul>
+  </ul> 
 
-  <img src = {{ link }}>
+  <!-- <img src = {{ link }}> -->
+
+  <div class = "map" id="map"></div>
   
+
+
 <form action="/search_carpool" method="POST"> 
     <div class="search">   
         <input type ="submit" name="search" value="Search for Carpool">
