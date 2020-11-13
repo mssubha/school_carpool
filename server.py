@@ -47,6 +47,15 @@ def search_carpool():
     return render_template('search.html', carpoolers = carpoolers)
 
 
+@app.route('/individual_request', methods =['POST'])
+def display_individual_user():
+    user_id=request.form.get('carpoolrequest')
+    user = crud.get_user_by_id(user_id)
+    children = user.children
+    print(children)
+    return render_template('send_request.html', user = user, children =children )
+
+
 @app.route('/new_user', methods=['POST'])
 def new_user():
     """ User Registration Page """

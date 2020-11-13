@@ -4,18 +4,25 @@
 
 {% block body %}
 <h2> Your carpool buddies</h2>
+<form action="/individual_request" method="POST"> 
 
 <ul>
     {% for carpooler in carpoolers %}
       <ul>
         
-        <input type="radio"  name="carpoolrequest" value= {{ carpooler.user_id }}>
+        <input type="radio"  name="carpoolrequest" value = {{carpooler.user_id}} >
+
         {{carpooler.household1}} {{carpooler.address_street}}  {{carpooler.address_city}} {{carpooler.phone_number}} {{carpooler.email}} 
        
       </ul>
-    {% endfor %}
-  </ul>
 
+    {% endfor %}
+
+</ul>
+    <div class="request">   
+        <input type ="submit" name="response" value="Send Request">
+    </div>   
+  </form> 
 
 {% endblock %}
 
