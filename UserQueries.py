@@ -12,7 +12,8 @@ from sqlalchemy import func
 
 def get_user_buddies(email):
     user_id = crud.get_user_by_email(email).user_id
-    sql = """SELECT household1, address_street, address_city, address_state , phone_number, email 
+    sql = """SELECT user_id, household1, address_street, address_city, address_state , phone_number, email,
+             address_latitude, address_longitude
              FROM users 
              WHERE users.user_id in 
              (SELECT from_user from requests where request_status = 'A' and to_user = :user_id)

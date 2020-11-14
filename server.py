@@ -1,6 +1,6 @@
 """Server for movie carpool app."""
 from flask import (Flask, render_template, request, flash, session,
-                   redirect)
+                   redirect,jsonify)
 from model import connect_to_db
 import crud
 import userqueries
@@ -38,6 +38,26 @@ def user_login():
         link = userqueries.static_map(email)
         return render_template('user.html',buddies=buddies,link=link)
 
+@app.route("/api/carpoolers")
+def carpoolers_info():
+    """JSON information about bears."""
+
+    carpoolers = [
+        {
+            "user_id": carpooler.user_id,
+            "name": carpooler.household1,
+            "street": carpooler.address_street,
+            "city": carpooler.address_city,
+            "phone": carpooler.phone_number,
+            "email": carpooler.email,
+            "userLat": carpooler.address_latitude,
+            "userLong": carpooler.address_longitude,
+        }
+        for carpooler in userqueries.get_user_buddies(session['username'])
+        # for carpooler in userqueries.get_user_buddies('6tester6@test.com')
+    ]
+
+    return jsonify(carpoolers)
 
 @app.route('/search_carpool' , methods=['POST'])
 def search_carpool():

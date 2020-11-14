@@ -3,10 +3,16 @@
 {% block title %}Kids Carpool - Go Green and Have Fun!{% endblock %}
 
 {% block head %}
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwlu-IaYecshl2Ak0bblcLHqDWVwxqEXI&callback=initMap"
+
+<link rel="stylesheet" type="text/css" href="/static/css/maps.css" />
+<link rel="stylesheet" href="/static/css/user.css" />
+
+<script src="https://maps.googleapis.com/maps/api/js?key=API_KEY&callback=initMap"
 defer
 ></script>
-<link rel="stylesheet" type="text/css" href="/static/css/maps.css" />
+
+
+
 <script src="/static/js/display_map.js"></script>
 
 {% endblock %}
