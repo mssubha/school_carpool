@@ -40,7 +40,7 @@ def user_login():
 
 @app.route("/api/carpoolers")
 def carpoolers_info():
-    """JSON information about bears."""
+    """JSON information about carpoolers."""
 
     carpoolers = [
         {
@@ -59,10 +59,61 @@ def carpoolers_info():
 
     return jsonify(carpoolers)
 
+@app.route("/api/search_carpoolers")
+def search_carpoolers_info():
+    """JSON information about carpoolers."""
+
+    a = session['smoking_preference']
+    b = session['pets_preference']
+    print (f'Smoking is {a}')
+    print (f'Pets is {b}')
+
+    carpoolers = [
+        {
+            "user_id": carpooler.user_id,
+            "name": carpooler.household1,
+            "street": carpooler.address_street,
+            "city": carpooler.address_city,
+            "phone": carpooler.phone_number,
+            "email": carpooler.email,
+            "userLat": carpooler.address_latitude,
+            "userLong": carpooler.address_longitude,
+        }
+        for carpooler in  userqueries.get_carpool_closeby_filter(session['username'],session['smoking_preference'],session['pets_preference'])
+    ]
+
+    return jsonify(carpoolers)
+
+
+@app.route('/search_filter_carpool' , methods=['POST'])
+def search_carpool_filter():
+    session['smoking_preference'] = 0
+    session['pets_preference'] = 0
+    smoking = 0
+    pets = 0
+    
+    print (request.form.get('search_smoking'))
+    print (request.form.get('search_pets'))
+
+    if (request.form.get('search_smoking') == 'YES'):
+        smoking = 1
+        session['smoking_preference'] = 1
+    
+    if (request.form.get('search_pets') == 'YES'):
+        pets = 1
+        session['pets_preference'] = 1
+    
+    # session['smoking_preference'] = smoking
+    # session['pets_preference'] = pets
+    carpoolers = userqueries.get_carpool_closeby_filter(session['username'],smoking,pets)
+    return render_template('search.html', carpoolers = carpoolers)
+    
+
+
 @app.route('/search_carpool' , methods=['POST'])
 def search_carpool():
     carpoolers = userqueries.get_carpool_closeby(session['username'])
-    # print(carpool_list)
+    
     return render_template('search.html', carpoolers = carpoolers)
 
 

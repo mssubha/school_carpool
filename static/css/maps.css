@@ -52,6 +52,11 @@ nav a:hover, nav button:hover {
   height: 50%;
 }
 
+.map, #search_map {
+  width: 50%;
+  height: 50%;
+}
+
 /* Optional: Makes the sample page fill the window. */
 html,
 body {

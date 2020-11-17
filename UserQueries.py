@@ -35,6 +35,42 @@ def get_carpool_closeby(email):
         user_geo = crud.get_user_geo(email)
         return User.query.filter(func.ST_DistanceSphere(User.address_geo, user_geo) < 804.67).all()
 
+def get_carpooler_preference(carpooler_id):
+    """ Return the car details for a user """
+    return Car.query.get(carpooler_id)
+
+
+def get_carpool_closeby_filter(email,smoking,pets):
+    """Return all address within a given distance from the user's address."""
+    filtered_carpoolers = []
+    carpoolers_closeby = get_carpool_closeby(email)
+    
+    if (smoking == 0 and pets == 0):
+        return carpoolers_closeby
+    
+    if (smoking == 1 and pets == 1):
+        for carpooler in carpoolers_closeby:
+            carpooler_preference = get_carpooler_preference(carpooler.user_id)
+            if (carpooler_preference.pets == False and carpooler_preference.smoking == False):
+                filtered_carpoolers.append(carpooler)
+        return filtered_carpoolers
+
+    if (smoking == 0 and pets == 1):
+        for carpooler in carpoolers_closeby:
+            carpooler_preference = get_carpooler_preference(carpooler.user_id)
+            if (carpooler_preference.pets == False):
+                filtered_carpoolers.append(carpooler)
+        return filtered_carpoolers
+
+    if (smoking == 1 and pets == 0):
+        for carpooler in carpoolers_closeby:
+            carpooler_preference = get_carpooler_preference(carpooler.user_id)
+            if (carpooler_preference.smoking == False):
+                filtered_carpoolers.append(carpooler)
+        return filtered_carpoolers
+
+
+
 if __name__ == '__main__':
     from server import app
     connect_to_db(app)

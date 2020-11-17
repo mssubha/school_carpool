@@ -7,12 +7,6 @@
 <link rel="stylesheet" type="text/css" href="/static/css/maps.css" />
 <link rel="stylesheet" href="/static/css/user.css" />
 
-<script src="https://maps.googleapis.com/maps/api/js?key=API_KEY&callback=initMap"
-defer
-></script>
-
-
-
 <script src="/static/js/display_map.js"></script>
 
 {% endblock %}
@@ -31,14 +25,19 @@ defer
     {% endfor %}
   </ul> 
 
-  <!-- <img src = {{ link }}> -->
-
-  <div class = "map" id="map"></div>
+<div class = "map" id="map"></div>
   
 
 
-<form action="/search_carpool" method="POST"> 
+<form action="/search_filter_carpool" method="POST"> 
     <div class="search">   
+
+      <input type="checkbox" id="search_smoking" name="search_smoking" value= 'YES'>
+      <label for="search_smoking"> No Smoking</label>
+
+      <input type="checkbox" id="search_pets" name="search_pets" value= 'YES'>
+      <label for="search_option"> No Pets</label><br><br>
+
         <input type ="submit" name="search" value="Search for Carpool">
     </div>   
 </form>   

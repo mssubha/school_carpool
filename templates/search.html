@@ -2,8 +2,36 @@
 
 {% block title %}Kids Carpool - Go Green and Have Fun!{% endblock %}
 
+{% block head %}
+
+<link rel="stylesheet" type="text/css" href="/static/css/maps.css" />
+<link rel="stylesheet" href="/static/css/user.css" />
+
+
+<script src="/static/js/search_map.js"></script>
+
+{% endblock %}
+
 {% block body %}
-<h2> Your carpool buddies</h2>
+<h2> Carpoolers close to your address:</h2>
+
+
+
+<!-- <form action="/search_filter_carpool" method="POST"> 
+
+<input type="checkbox" id="search_smoking" name="search_smoking" value=1>
+<label for="search_smoking"> No Smoking</label><br>
+
+<input type="checkbox" id="search_pets" name="search_pets" value=1>
+<label for="search_option"> No Pets</label><br>
+
+  <div class="search">   
+      <input type ="submit" name="search" value="Filter Search">
+  </div>   
+</form>   -->
+
+<div class = "map" id="search_map"></div>
+
 <form action="/individual_request" method="POST"> 
 
 <ul>
@@ -19,10 +47,13 @@
     {% endfor %}
 
 </ul>
+
     <div class="request">   
         <input type ="submit" name="response" value="Send Request">
     </div>   
   </form> 
+
+  
 
 {% endblock %}
 
