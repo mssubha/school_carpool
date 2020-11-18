@@ -15,11 +15,7 @@ function initMap() {
     mapTypeId: google.maps.MapTypeId.TERRAIN
   });
 
-  // When a user clicks on a bear, an info window about that bear will appear.
-  //
-  // When they click on another bear, we want the previous info window to
-  // disappear, so that only one window is open at a time.
-  //
+  
   // To do this, we'll define a single InfoWindow instance. All markers will
   // share this instance.
   const userInfo = new google.maps.InfoWindow();

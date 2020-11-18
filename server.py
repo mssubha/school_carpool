@@ -38,6 +38,7 @@ def user_login():
         link = userqueries.static_map(email)
         return render_template('user.html',buddies=buddies,link=link)
 
+
 @app.route("/api/carpoolers")
 def carpoolers_info():
     """JSON information about carpoolers."""
@@ -58,6 +59,41 @@ def carpoolers_info():
     ]
 
     return jsonify(carpoolers)
+
+
+@app.route("/api/request_peson")
+def request_person_info():
+    request_user = crud.get_user_by_id(session['send_request_to'])
+    login_user = crud.get_user_by_email(session['username'])
+    a = session['send_request_to']
+    b = session['username']
+    print (f'send_to {a} and user in {b}')
+    carpoolers = [
+        {
+            "user_id": request_user.user_id,
+            "name": request_user.household1,
+            "street": request_user.address_street,
+            "city": request_user.address_city,
+            "phone": request_user.phone_number,
+            "email": request_user.email,
+            "userLat": request_user.address_latitude,
+            "userLong": request_user.address_longitude,
+        },
+        {
+            "user_id": login_user.user_id,
+            "name": login_user.household1,
+            "street": login_user.address_street,
+            "city": login_user.address_city,
+            "phone": login_user.phone_number,
+            "email": login_user.email,
+            "userLat": login_user.address_latitude,
+            "userLong": login_user.address_longitude,
+        }
+    ]
+
+    return jsonify(carpoolers)
+
+
 
 @app.route("/api/search_carpoolers")
 def search_carpoolers_info():
@@ -107,7 +143,6 @@ def search_carpool_filter():
     # session['pets_preference'] = pets
     carpoolers = userqueries.get_carpool_closeby_filter(session['username'],smoking,pets)
     return render_template('search.html', carpoolers = carpoolers)
-    
 
 
 @app.route('/search_carpool' , methods=['POST'])
@@ -119,11 +154,12 @@ def search_carpool():
 
 @app.route('/individual_request', methods =['POST'])
 def display_individual_user():
-    user_id=request.form.get('carpoolrequest')
-    user = crud.get_user_by_id(user_id)
-    children = user.children
-    print(children)
-    return render_template('send_request.html', user = user, children =children )
+    request_user_id=request.form.get('carpoolrequest')
+    request_user = crud.get_user_by_id(request_user_id)
+    request_user_children = request_user.children
+    login_user = crud.get_user_by_email( session['username'])
+    session['send_request_to'] = request_user_id
+    return render_template('send_request.html', request_user = request_user, request_user_children = request_user_children,login_user=login_user  )
 
 
 @app.route('/new_user', methods=['POST'])

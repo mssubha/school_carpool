@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Kids Carpool - Go Green and Have Fun!{% endblock %}
+
+{% block head %}
+
+<link rel="stylesheet" type="text/css" href="/static/css/maps.css" />
+<link rel="stylesheet" href="/static/css/user.css" />
+
+<script src="/static/js/send_request_map.js"></script>
+
+{% endblock %}
+
+{% block body %}
+ <h2> {{ login_user.household1 }}, you are sending request to : {{ request_user.household1 }} </h2>
+
+     
+  
+<ul>
+    {% for child in request_user_children %}
+      <li>
+        
+        {{child.name}} {{child.grade}} 
+       
+      </li>
+    {% endfor %}
+  </ul> 
+
+<div class = "map" id="request_map"></div>
+  
+
+<form action="/send_request" method="POST"> 
+    <input type="text" placeholder=" " name="request_note"> <br><br> 
+    <label>Request Note : </label>  
+    <input type ="submit" name="send_request" value="Send Request">
+</form> 
+
+{% endblock %}
+
+

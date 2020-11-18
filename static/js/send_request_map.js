@@ -5,7 +5,7 @@ const labels = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 let labelIndex = 0;
 
 function initMap() {
-    map = new google.maps.Map(document.getElementById("search_map"), {
+    map = new google.maps.Map(document.getElementById("request_map"), {
     center: {lat: 38.00784, lng: -122.522375},
     scrollwheel: false,
     zoom: 14,
@@ -15,13 +15,14 @@ function initMap() {
     mapTypeId: google.maps.MapTypeId.TERRAIN
   });
 
-
+  
+  // To do this, we'll define a single InfoWindow instance. All markers will
+  // share this instance.
   const userInfo = new google.maps.InfoWindow();
 
   // Retrieving the information with AJAX.
   // If you want to see what `/api/carpoolers` returns, you should check `server.py`
-  
-  $.get('/api/search_carpoolers', (carpoolers) => {
+  $.get('/api/request_peson', (carpoolers) => {
     for (const carpooler of carpoolers) {
       // Define the content of the infoWindow
       const userInfoContent = (`
@@ -68,18 +69,3 @@ function initMap() {
   });
 
 }
-
-$('request_form').on('submit', (evt) => {
-  evt.preventDefault();
-
-  // Get user input from a form
-  const formData = {
-    request_userid: $('input[name="carpoolrequest"]:checked').val()
-  };
-
-  // Send formData to the server (becomes a query string)
-  $.post('/individual_request', formInputs, (res) => {
-    // Display response from the server
-    alert(`Sent the user_id to server`);
-  });
-});
