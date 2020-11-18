@@ -1,6 +1,7 @@
 """Server for movie carpool app."""
 from flask import (Flask, render_template, request, flash, session,
                    redirect,jsonify)
+from datetime import datetime
 from model import connect_to_db
 import crud
 import userqueries
@@ -35,8 +36,9 @@ def user_login():
     else:
         session['username'] = email
         buddies = userqueries.get_user_buddies(email)
-        link = userqueries.static_map(email)
-        return render_template('user.html',buddies=buddies,link=link)
+        # link = userqueries.static_map(email)
+        return render_template('user.html',buddies=buddies)
+        # return render_template('user.html',buddies=buddies,link=link)
 
 
 @app.route("/api/carpoolers")
@@ -94,15 +96,14 @@ def request_person_info():
     return jsonify(carpoolers)
 
 
-
 @app.route("/api/search_carpoolers")
 def search_carpoolers_info():
     """JSON information about carpoolers."""
 
-    a = session['smoking_preference']
-    b = session['pets_preference']
-    print (f'Smoking is {a}')
-    print (f'Pets is {b}')
+    # a = session['smoking_preference']
+    # b = session['pets_preference']
+    # print (f'Smoking is {a}')
+    # print (f'Pets is {b}')
 
     carpoolers = [
         {
@@ -145,10 +146,9 @@ def search_carpool_filter():
     return render_template('search.html', carpoolers = carpoolers)
 
 
-@app.route('/search_carpool' , methods=['POST'])
+@app.route('/search_carpool')
 def search_carpool():
     carpoolers = userqueries.get_carpool_closeby(session['username'])
-    
     return render_template('search.html', carpoolers = carpoolers)
 
 
@@ -196,6 +196,23 @@ def create_user():
     crud.create_user_child(email, childname, grade)
     
     return redirect('/') 
+
+@app.route('/send_request', methods=['POST'])
+def send_request():
+    notes = request.form.get('request_note')
+
+    login_user = crud.get_user_by_email(session['username'])
+    from_user = login_user.user_id
+    to_user = session['send_request_to']
+    child_id = login_user.children[0].child_id
+    request_note = notes
+    request_datetime = datetime.now() 
+    print (notes)
+    crud.create_request(from_user,to_user,child_id,request_note,"","S",request_datetime)
+
+    buddies = userqueries.get_user_buddies(session['username'])
+    return render_template('user.html',buddies=buddies)
+   
 
 
 if __name__ == '__main__':

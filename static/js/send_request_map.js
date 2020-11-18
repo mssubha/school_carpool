@@ -69,3 +69,18 @@ function initMap() {
   });
 
 }
+
+$('individual_request_form').on('submit', (evt) => {
+  evt.preventDefault();
+
+  // Get user input from a form
+  const formData = {
+    'requestnote': $('#request_note').text
+  };
+
+  // Send formData to the server (becomes a query string)
+  $.post('/send_request', formInputs, (res) => {
+    // Display response from the server
+    alert(`Sent the user_id to server`);
+  });
+});
