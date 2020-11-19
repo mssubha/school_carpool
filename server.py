@@ -213,7 +213,10 @@ def send_request():
     buddies = userqueries.get_user_buddies(session['username'])
     return render_template('user.html',buddies=buddies)
    
-
+@app.route('/accept_deny_request', methods=['POST'])
+def show_requests():
+    carpoolers = userqueries.get_requests_recieved(session['username'])
+    return render_template('requests.html', carpoolers = carpoolers)
 
 if __name__ == '__main__':
     connect_to_db(app)

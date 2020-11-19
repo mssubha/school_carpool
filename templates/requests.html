@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Kids Carpool - Go Green and Have Fun!{% endblock %}
+
+{% block head %}
+
+<link rel="stylesheet" type="text/css" href="/static/css/maps.css" />
+<link rel="stylesheet" href="/static/css/user.css" />
+
+
+<script src="/static/js/accept_deny.js"></script>
+
+{% endblock %}
+
+{% block body %}
+<h2> Carpoolers who have sent request:</h2>
+
+<div class = "map" id="requests_map"></div>
+
+<form id = "request_form" action="/individual_accept_deny" method="POST"> 
+
+<ul>
+    {% for carpooler in carpoolers %}
+      <ul>
+        
+        <input type="radio"  name="carpoolrequest" value = {{carpooler.user_id}} >
+
+        {{carpooler.household1}} {{carpooler.address_street}}  {{carpooler.address_city}} {{carpooler.phone_number}} {{carpooler.email}} 
+       
+      </ul>
+
+    {% endfor %}
+
+</ul>
+
+    <div class="request">   
+        <input type ="submit" name="response" value="Accept Deny Request">
+    </div>   
+  </form> 
+
+  
+
+{% endblock %}
+
+

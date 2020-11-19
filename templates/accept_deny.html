@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}Kids Carpool - Go Green and Have Fun!{% endblock %}
+
+{% block head %}
+
+<link rel="stylesheet" type="text/css" href="/static/css/maps.css" />
+<link rel="stylesheet" href="/static/css/user.css" />
+
+
+<script src="/static/js/accept_deny.js"></script>
+
+{% endblock %}
+
+{% block body %}
+<h2> Carpoolers who have sent request:</h2>
+
+
+
+<!-- <form action="/search_filter_carpool" method="POST"> 
+
+<input type="checkbox" id="search_smoking" name="search_smoking" value=1>
+<label for="search_smoking"> No Smoking</label><br>
+
+<input type="checkbox" id="search_pets" name="search_pets" value=1>
+<label for="search_option"> No Pets</label><br>
+
+  <div class="search">   
+      <input type ="submit" name="search" value="Filter Search">
+  </div>   
+</form>   -->
+
+<div class = "map" id="search_map"></div>
+
+<form id = "request_form" action="/individual_request" method="POST"> 
+
+<ul>
+    {% for carpooler in carpoolers %}
+      <ul>
+        
+        <input type="radio"  name="carpoolrequest" value = {{carpooler.user_id}} >
+
+        {{carpooler.household1}} {{carpooler.address_street}}  {{carpooler.address_city}} {{carpooler.phone_number}} {{carpooler.email}} 
+       
+      </ul>
+
+    {% endfor %}
+
+</ul>
+
+    <div class="request">   
+        <input type ="submit" name="response" value="Send Request">
+    </div>   
+  </form> 
+
+  
+
+{% endblock %}
+
+

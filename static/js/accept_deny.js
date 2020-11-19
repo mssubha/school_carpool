@@ -5,7 +5,7 @@ const labels = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 let labelIndex = 0;
 
 function initMap() {
-    map = new google.maps.Map(document.getElementById("request_map"), {
+    map = new google.maps.Map(document.getElementById("requests_map"), {
     center: {lat: 38.00784, lng: -122.522375},
     scrollwheel: false,
     zoom: 14,
@@ -21,8 +21,9 @@ function initMap() {
   const userInfo = new google.maps.InfoWindow();
 
   // Retrieving the information with AJAX.
+  //
   // If you want to see what `/api/carpoolers` returns, you should check `server.py`
-  $.get('/api/request_peson', (carpoolers) => {
+  $.get('/api/carpoolers', (carpoolers) => {
     for (const carpooler of carpoolers) {
       // Define the content of the infoWindow
       const userInfoContent = (`
@@ -69,18 +70,3 @@ function initMap() {
   });
 
 }
-
-$('individual_request_form').on('submit', (evt) => {
-  evt.preventDefault();
-
-  //Get user input from a form
-  const formData = {
-    'requestnote': $('#request_note').text
-  };
-
-  // Send formData to the server (becomes a query string)
-  $.post('/send_request', formInputs, (res) => {
-    // Display response from the server
-    alert(`Sent the user_id to server`);
-  });
-});
