@@ -7,53 +7,32 @@
 <link rel="stylesheet" type="text/css" href="/static/css/maps.css" />
 <link rel="stylesheet" href="/static/css/user.css" />
 
-
-<script src="/static/js/accept_deny.js"></script>
+<script src="/static/js/accept_deny_map.js"></script>
 
 {% endblock %}
 
 {% block body %}
-<h2> Carpoolers who have sent request:</h2>
-
-
-
-<!-- <form action="/search_filter_carpool" method="POST"> 
-
-<input type="checkbox" id="search_smoking" name="search_smoking" value=1>
-<label for="search_smoking"> No Smoking</label><br>
-
-<input type="checkbox" id="search_pets" name="search_pets" value=1>
-<label for="search_option"> No Pets</label><br>
-
-  <div class="search">   
-      <input type ="submit" name="search" value="Filter Search">
-  </div>   
-</form>   -->
-
-<div class = "map" id="search_map"></div>
-
-<form id = "request_form" action="/individual_request" method="POST"> 
+ <h2> {{ login_user.household1 }}, interested carpoolers are: {{ request_user.household1 }} </h2>
 
 <ul>
-    {% for carpooler in carpoolers %}
-      <ul>
-        
-        <input type="radio"  name="carpoolrequest" value = {{carpooler.user_id}} >
-
-        {{carpooler.household1}} {{carpooler.address_street}}  {{carpooler.address_city}} {{carpooler.phone_number}} {{carpooler.email}} 
-       
-      </ul>
-
+    {% for child in request_user_children %}
+      <li>
+        {{child.name}} {{child.grade}} 
+      </li>
     {% endfor %}
+  </ul> 
 
-</ul>
-
-    <div class="request">   
-        <input type ="submit" name="response" value="Send Request">
-    </div>   
-  </form> 
-
+<div class = "map" id="accept_deny_map"></div>
   
+
+<form id = "individual_request_form" action="/accept_deny_individual" method="POST"> 
+  <br>
+  <textarea id="request_note" name="request_note" rows="4" cols="50">
+    Write any additional information here 
+  </textarea><br>
+    <input type ="submit" name="send_request" value="Accept">
+    <input type ="submit" name="send_request" value="Deny">
+</form> 
 
 {% endblock %}
 

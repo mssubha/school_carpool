@@ -89,3 +89,10 @@ if __name__ == '__main__':
 
     # pg_dump carpool > carpool.sql
     # psql carpool < carpool.sql
+
+
+    # SELECT request_id, user_id, household1, address_street, address_city, address_state , phone_number, email,
+    #          address_latitude, address_longitude
+    #          FROM users, requests
+    #          WHERE users.user_id = requests.from_user
+    #          AND request_status = 'S' and to_user = 2

@@ -197,6 +197,7 @@ def create_user():
     
     return redirect('/') 
 
+
 @app.route('/send_request', methods=['POST'])
 def send_request():
     notes = request.form.get('request_note')
@@ -213,10 +214,46 @@ def send_request():
     buddies = userqueries.get_user_buddies(session['username'])
     return render_template('user.html',buddies=buddies)
    
+
 @app.route('/accept_deny_request', methods=['POST'])
 def show_requests():
     carpoolers = userqueries.get_requests_recieved(session['username'])
     return render_template('requests.html', carpoolers = carpoolers)
+
+
+@app.route('/individual_accept_deny', methods= ['POST'])
+def accept_deny_request():
+    request_user_id=request.form.get('carpoolrequest')
+    request_user = crud.get_user_by_id(request_user_id)
+    request_user_children = request_user.children
+    login_user = crud.get_user_by_email( session['username'])
+    session['accept_deny_userid'] = request_user_id
+    return render_template('accept_deny.html', request_user = request_user, request_user_children = request_user_children,login_user=login_user)
+
+
+# @app.route('/accept_deny_individual', methods= ['POST'])
+# def accept_deny_individual_request():
+#     accept_or_deny = request.form.get('send_request')
+#     if (accept_or_deny == "Accept"):
+#         request_code = "A"
+#     else:
+#         request_code = "D"
+
+#     notes = request.form.get('request_note')
+
+#     login_user = crud.get_user_by_email(session['username'])
+#     from_user = login_user.user_id
+#     to_user = session['accept_deny_userid']
+#     child_id = login_user.children[0].child_id
+#     request_note = notes
+#     request_datetime = datetime.now() 
+#     print (notes)
+#     crud.create_request(from_user,to_user,child_id,request_note,"","S",request_datetime)
+
+#     buddies = userqueries.get_user_buddies(session['username'])
+#     return render_template('user.html',buddies=buddies)
+   
+
 
 if __name__ == '__main__':
     connect_to_db(app)

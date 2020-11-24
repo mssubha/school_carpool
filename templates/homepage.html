@@ -4,17 +4,46 @@
 
 {% block body %}
 
-<form action="/user" method="POST"> 
+
+<div class="container"></div>
+    <form action="/user" method="POST"> 
+
+        <div class="form-group">
+        <label> Username :
+            <input type="email"
+               class="form-control"
+               placeholder="Enter email"
+               name="username" 
+               required>
+        </label>
+        </div>
+
+        <div class="form-group">
+        <label>Enter Password
+            <input type="password"
+                class="form-control"
+                placeholder="Password"
+                name="password" 
+                required>
+        </label>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Login</button>
+        <button type="submit" class="btn btn-danger">New User</button>
+
+    </form>
+</div>
+
+
+<!-- <form action="/user" method="POST"> 
     <div class="login">   
         <label>Username : </label>   
         <input type="text" placeholder="Enter email" name="username" required>  
         <label>Password : </label>  
         <input type="password" placeholder="Enter Password" name="password" required> <br>  
-        <!-- <button type="submit">Login</button>  <br>  -->
         <input type ="submit" name="action" value="Login">
-        <!-- <a href="newuser.html"> New User </a>    -->
     </div>   
-</form>   
+</form>    -->
 
 <form action="/new_user" method="POST"> 
     <input type ="submit" name="action" value="newuser">
