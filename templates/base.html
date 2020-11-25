@@ -28,9 +28,13 @@
 
 
     <h1 style="text-align:center"> SCHOOL CARPOOL PLANNER - SCHOOLPOOL </h1>
+    
     <script src="https://maps.googleapis.com/maps/api/js?key=API_KEY&callback=initMap"
     defer
     ></script>
+
+    <link rel="stylesheet" href="/static/css/user.css" />
+
   {% block head %}{% endblock %}
 
   </head>
@@ -61,7 +65,7 @@
 
     {% for msg in get_flashed_messages() %}
       <p class="flash-msg">
-        {{ msg }}
+        <span class="closebtn"> {{ msg }}  </span>
       </p>
     {% endfor %}
 

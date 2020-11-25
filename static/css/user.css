@@ -26,6 +26,24 @@ div.window-content {
     filter: drop-shadow(0 0 3px #2056c033);
   }
   
-  
+/* The alert message box */
+.flash-msg {
+  padding: 20px;
+  background-color: #f44336; 
+  color: white;
+  margin-bottom: 15px;
+} 
+
+/* The close button */
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: center;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+} 
   
   

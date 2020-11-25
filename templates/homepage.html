@@ -5,48 +5,41 @@
 {% block body %}
 
 
-<div class="container"></div>
+<div class="container">
+    
+       
     <form action="/user" method="POST"> 
-
+        <div class="row">
+        <img src="static/img/carpoolschool.jpg" class="img-fluid " alt="Responsive image">
+        </div>
         <div class="form-group">
         <label> Username :
             <input type="email"
                class="form-control"
                placeholder="Enter email"
-               name="username" 
-               required>
+               name="username">
         </label>
         </div>
 
         <div class="form-group">
-        <label>Enter Password
+        <label>Enter Password :
             <input type="password"
                 class="form-control"
                 placeholder="Password"
-                name="password" 
-                required>
+                name="password">
         </label>
         </div>
 
-        <button type="submit" class="btn btn-primary">Login</button>
-        <button type="submit" class="btn btn-danger">New User</button>
+        <button type="submit" class="btn btn-success" 
+        name="action" value="login" >Login</button>
+        
+        <button type="submit" class="btn btn-outline-success" 
+        name = "action" value = "newuser">New User</button>
+        <br>
+        <br>
+        <p><strong>{{message}}</strong></p>
 
     </form>
 </div>
-
-
-<!-- <form action="/user" method="POST"> 
-    <div class="login">   
-        <label>Username : </label>   
-        <input type="text" placeholder="Enter email" name="username" required>  
-        <label>Password : </label>  
-        <input type="password" placeholder="Enter Password" name="password" required> <br>  
-        <input type ="submit" name="action" value="Login">
-    </div>   
-</form>    -->
-
-<form action="/new_user" method="POST"> 
-    <input type ="submit" name="action" value="newuser">
-</form> 
 
 {% endblock %}

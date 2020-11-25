@@ -30,7 +30,7 @@ def create_user(email, password, household1, household2, phone_number,
                 address_longitude =longitude,address_geo=geo)
 
     db.session.add(user)
-    db.session.commit()
+    # db.session.commit()
 
     return user
 
@@ -67,7 +67,7 @@ def create_user_car(email,car_make,car_model,license_plate,smoking,pets,seats):
               pets = int(pets), seats = int(seats))
 
     db.session.add(car)
-    db.session.commit()
+    # db.session.commit()
 
     return car
 

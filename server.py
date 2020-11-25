@@ -16,29 +16,32 @@ app.jinja_env.undefined = StrictUndefined
 @app.route('/')
 def homepage():
     """View Homepage"""
-    return render_template('homepage.html')
+    return render_template('homepage.html',message ="")
+ 
+  
     
 
 @app.route('/user', methods=['POST'])   
 def user_login():
     """ Validate Login and Display User Page"""
-    # if (request.form.get('action') == 'Login'):
-    email = request.form.get('username')
-    password = request.form.get('password')
-    existing_user = crud.get_user_by_email(email)
+    if (request.form.get('action') == 'login'):
+        email = request.form.get('username')
+        password = request.form.get('password')
+        existing_user = crud.get_user_by_email(email)
     
-    if (existing_user == None):
-        flash("User not found. Create an account")
-        return redirect('/') 
-    elif (crud.check_login_details(email,password) == False):
-        flash ("Invalid Password")
-        return redirect('/') 
+        if (existing_user == None):
+            # flash("User not found. Create an account")
+            return render_template('homepage.html', message = "User not found. Create an account" ) 
+        elif (crud.check_login_details(email,password) == False):
+            # flash ("Invalid Password")
+            return render_template('homepage.html', message = "Invalid Password") 
+        else:
+            session['username'] = email
+            buddies = userqueries.get_user_buddies(email)
+            
+            return render_template('user.html',buddies=buddies,number = len(buddies))
     else:
-        session['username'] = email
-        buddies = userqueries.get_user_buddies(email)
-        # link = userqueries.static_map(email)
-        return render_template('user.html',buddies=buddies)
-        # return render_template('user.html',buddies=buddies,link=link)
+        return render_template('newuser.html')
 
 
 @app.route("/api/carpoolers")
@@ -162,10 +165,10 @@ def display_individual_user():
     return render_template('send_request.html', request_user = request_user, request_user_children = request_user_children,login_user=login_user  )
 
 
-@app.route('/new_user', methods=['POST'])
-def new_user():
-    """ User Registration Page """
-    return render_template('newuser.html')
+# @app.route('/new_user', methods=['POST'])
+# def new_user():
+#     """ User Registration Page """
+#     return render_template('newuser.html')
 
 
 @app.route('/create_user', methods=['POST'])
@@ -195,6 +198,8 @@ def create_user():
     grade = request.form.get("childgrade")
     crud.create_user_child(email, childname, grade)
     
+
+    flash ("User Successfully Created. Login to Continue")
     return redirect('/') 
 
 

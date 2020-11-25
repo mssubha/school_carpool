@@ -2,7 +2,17 @@
 
 {% block title %}Kids Carpool - Go Green and Have Fun!{% endblock %}
 
+{% block head %}
+
+<!-- <link rel="stylesheet" type="text/css" href="/static/css/maps.css" /> -->
+<link rel="stylesheet" href="/static/css/new_user.css" />
+
+
+{% endblock %}
+
 {% block body %}
+
+
 
 <form action="/create_user" method="POST"> 
 
@@ -103,8 +113,8 @@
         <input type="text" placeholder="Enter Child Name" name="childname" required> 
         <label>Child Grade : </label>  
         <input type="text" placeholder="Enter Child Grade" name="childgrade" required> <br><br>
-        
-        <input type ="submit" name="action" value="createuser">
+
+        <input type ="submit" name="action" value="Create User">
 
     </div>   
 </form>
