@@ -12,13 +12,13 @@ app = Flask(__name__)
 app.secret_key = "dev"
 app.jinja_env.undefined = StrictUndefined
 
-
+"""Home Page"""
 @app.route('/')
 def homepage():
     """View Homepage"""
     return render_template('homepage.html',message ="")
  
-  
+"""Create New User"""
 @app.route('/create_user', methods=['POST'])
 def create_user():
     """ Create New User with user, car and child information """
@@ -50,7 +50,7 @@ def create_user():
     flash ("User Successfully Created. Login to Continue")
     return redirect('/') 
 
-
+"""Login"""
 @app.route('/login', methods=['POST'])   
 def user_login():
     """ Validate Login and Display User Page"""
@@ -73,7 +73,7 @@ def user_login():
     else:
         return render_template('newuser.html')
 
-
+""" Display all carpoolers"""
 @app.route('/all_carpoolers' , methods=['POST'])
 def search_all_carpool():
     """ List all carpoolers available without any filter"""
@@ -83,7 +83,7 @@ def search_all_carpool():
     carpoolers = userqueries.get_carpool_closeby_filter(session['username'],0,0,25)
     return render_template('search.html', carpoolers = carpoolers)
 
-
+""" Display carpoolers with filter """
 @app.route('/search_filter_carpool' , methods=['POST'])
 def search_carpool_filter():
     """ List all carpoolers available with smoking, pet and distance filter"""
@@ -113,7 +113,7 @@ def search_carpool_filter():
     carpoolers = userqueries.get_carpool_closeby_filter(session['username'],smoking,pets,distance)
     return render_template('search.html', carpoolers = carpoolers)
 
-
+""" Return JSON of carpoolers """
 # @app.route("/api/search_carpoolers")
 @app.route("/search_carpoolers/json")
 def search_carpoolers_info():
@@ -134,6 +134,13 @@ def search_carpoolers_info():
     ]
 
     return jsonify(carpoolers)
+
+
+
+
+
+
+
 
 @app.route('/search_carpool',methods=['POST'])
 def user_carpoolers():
