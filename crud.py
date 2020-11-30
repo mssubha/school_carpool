@@ -22,7 +22,7 @@ def create_user(email, password, household1, household2, phone_number,
     longitude = result['geometry']['location']['lng']
 
     geo=func.ST_Point(longitude, latitude)
-
+    phone_number = "+1" + phone_number
     user = User(email=email, password=password, household1=household1,
                 household2=household2, phone_number=phone_number,
                 address_street=address_street, address_city=address_city,

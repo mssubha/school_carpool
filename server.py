@@ -19,9 +19,36 @@ def homepage():
     return render_template('homepage.html',message ="")
  
   
-@app.route('/logout') 
-def logout():  
-    return render_template('logout.html')
+@app.route('/create_user', methods=['POST'])
+def create_user():
+    """ Create New User with user, car and child information """
+    email = request.form.get('email')
+    password = request.form.get('password')
+    household1 = request.form.get('name1')
+    household2 = request.form.get('name2')
+    phone_number = request.form.get('phone')
+    address_street = request.form.get('street')
+    address_city = request.form.get('city')
+    address_state = request.form.get('state')
+    address_zip = request.form.get('zipcode')
+    crud.create_user(email, password, household1, household2, phone_number, 
+                address_street, address_city, address_state, address_zip)
+
+    car_make = request.form.get("carmake")
+    car_model = request.form.get("carmodel")
+    license_plate = request.form.get("licenseplate")
+    seats = request.form.get("carpoolseats")
+    smoking = request.form.get("smoking")
+    pets = request.form.get("pets")
+    crud.create_user_car(email,car_make,car_model,license_plate,smoking,pets,seats)
+
+    childname = request.form.get("childname")
+    grade = request.form.get("childgrade")
+    crud.create_user_child(email, childname, grade)
+    
+
+    flash ("User Successfully Created. Login to Continue")
+    return redirect('/') 
 
 
 @app.route('/user', methods=['POST'])   
@@ -168,38 +195,6 @@ def display_individual_user():
     return render_template('send_request.html', request_user = request_user, request_user_children = request_user_children,login_user=login_user  )
 
 
-@app.route('/create_user', methods=['POST'])
-def create_user():
-    """ Create New User with user, car and child information """
-    email = request.form.get('email')
-    password = request.form.get('password')
-    household1 = request.form.get('name1')
-    household2 = request.form.get('name2')
-    phone_number = request.form.get('phone')
-    address_street = request.form.get('street')
-    address_city = request.form.get('city')
-    address_state = request.form.get('state')
-    address_zip = request.form.get('zipcode')
-    crud.create_user(email, password, household1, household2, phone_number, 
-                address_street, address_city, address_state, address_zip)
-
-    car_make = request.form.get("carmake")
-    car_model = request.form.get("carmodel")
-    license_plate = request.form.get("licenseplate")
-    seats = request.form.get("carpoolseats")
-    smoking = request.form.get("smoking")
-    pets = request.form.get("pets")
-    crud.create_user_car(email,car_make,car_model,license_plate,smoking,pets,seats)
-
-    childname = request.form.get("childname")
-    grade = request.form.get("childgrade")
-    crud.create_user_child(email, childname, grade)
-    
-
-    flash ("User Successfully Created. Login to Continue")
-    return redirect('/') 
-
-
 @app.route('/send_request', methods=['POST'])
 def send_request():
     """ Send a carpool request to a carpooler livnig near the user"""
@@ -234,6 +229,11 @@ def accept_deny_request():
     login_user = crud.get_user_by_email( session['username'])
     session['accept_deny_userid'] = request_user_id
     return render_template('accept_deny.html', request_user = request_user, request_user_children = request_user_children,login_user=login_user)
+
+
+@app.route('/logout') 
+def logout():  
+    return render_template('logout.html')
 
 
 # @app.route('/accept_deny_individual', methods= ['POST'])
