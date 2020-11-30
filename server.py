@@ -19,7 +19,10 @@ def homepage():
     return render_template('homepage.html',message ="")
  
   
-    
+@app.route('/logout') 
+def logout():  
+    return render_template('logout.html')
+
 
 @app.route('/user', methods=['POST'])   
 def user_login():
@@ -165,15 +168,9 @@ def display_individual_user():
     return render_template('send_request.html', request_user = request_user, request_user_children = request_user_children,login_user=login_user  )
 
 
-# @app.route('/new_user', methods=['POST'])
-# def new_user():
-#     """ User Registration Page """
-#     return render_template('newuser.html')
-
-
 @app.route('/create_user', methods=['POST'])
 def create_user():
-    """ Create New User """
+    """ Create New User with user, car and child information """
     email = request.form.get('email')
     password = request.form.get('password')
     household1 = request.form.get('name1')
@@ -205,6 +202,7 @@ def create_user():
 
 @app.route('/send_request', methods=['POST'])
 def send_request():
+    """ Send a carpool request to a carpooler livnig near the user"""
     notes = request.form.get('request_note')
 
     login_user = crud.get_user_by_email(session['username'])
@@ -222,12 +220,14 @@ def send_request():
 
 @app.route('/accept_deny_request', methods=['POST'])
 def show_requests():
+    """ Show all the requests that a user has recieved"""
     carpoolers = userqueries.get_requests_recieved(session['username'])
     return render_template('requests.html', carpoolers = carpoolers)
 
 
 @app.route('/individual_accept_deny', methods= ['POST'])
 def accept_deny_request():
+    """ User can accept or deny a request """
     request_user_id=request.form.get('carpoolrequest')
     request_user = crud.get_user_by_id(request_user_id)
     request_user_children = request_user.children

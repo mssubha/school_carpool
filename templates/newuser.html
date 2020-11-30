@@ -21,10 +21,10 @@
         <input type="text" placeholder="Enter email" name="email" required> 
         <label>Password : </label>  
         <input type="password" placeholder="Enter password" name="password" required> <br><br> 
-        <label>Household1 : </label>   
+        <label>Primary Contact : </label>   
         <input type="text" placeholder="Enter name" name="name1" required> 
-        <label>Household2 : </label>   
-        <input type="text" placeholder="Enter name" name="name2" required> <br><br>
+        <label>Additional Contact : </label>   
+        <input type="text" placeholder="Enter name" name="name2" > <br><br>
         <label>Phone Number : </label>  
         <input type="text" placeholder="Enter phone number" name="phone" required> <br><br>
         <label>Street : </label>  
@@ -37,7 +37,7 @@
             <option value="AK">Alaska</option>
             <option value="AZ">Arizona</option>
             <option value="AR">Arkansas</option>
-            <option value="CA">California</option>
+            <option value="CA" selected="selected" >California</option>
             <option value="CO">Colorado</option>
             <option value="CT">Connecticut</option>
             <option value="DE">Delaware</option>
@@ -100,13 +100,13 @@
         <label>Smoking:</label>
         <input type="radio" name="smoking" value=1>
         <label for="smoking">Yes</label>
-        <input type="radio" name="smoking" value=0>
+        <input type="radio" name="smoking" value=0 checked="checked">
         <label for="smoking">No</label> <br><br>
 
         <label> Pets:</label>
         <input type="radio" name="pets" value=1>
         <label for="pets">Yes</label>
-        <input type="radio" name="pets" value=0>
+        <input type="radio" name="pets" value=0 checked="checked">
         <label for="pets">No</label> <br><br>
        
         <label>Child Name : </label>  

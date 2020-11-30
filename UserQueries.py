@@ -25,11 +25,6 @@ def get_user_buddies(email):
     return(buddies)
 
 
-def static_map(email):
-   api_key = os.environ['google_api_key'] 
-   return("http://maps.google.com/maps/api/staticmap?center=Brooklyn+Bridge,New+York,NY&zoom=14&size=512x512&maptype=roadmap&markers=color:blue|label:S|40.702147,-74.015794&markers=color:green|label:G|40.711614,-74.012318&markers=color:red|label:C|40.718217,-73.998284&sensor=false&key="+api_key)
-
-
 def get_carpool_closeby(email):
         """Return all address within a given distance from the user's address."""
         # ST_DistanceSphere compares distance in meters. 1 Mile = 1609.34 meters.
