@@ -21,7 +21,8 @@ function initMap() {
   // Retrieving the information with AJAX.
   // If you want to see what `/api/carpoolers` returns, you should check `server.py`
   
-  $.get('/api/search_carpoolers', (carpoolers) => {
+  // $.get('/api/search_carpoolers', (carpoolers) => {
+  $.get('/search_carpoolers/json', (carpoolers) => {
     for (const carpooler of carpoolers) {
       // Define the content of the infoWindow
       const userInfoContent = (`

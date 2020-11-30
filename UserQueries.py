@@ -25,11 +25,12 @@ def get_user_buddies(email):
     return(buddies)
 
 
-def get_carpool_closeby(email):
+def get_carpool_closeby(email, distance = 25):
         """Return all address within a given distance from the user's address."""
         # ST_DistanceSphere compares distance in meters. 1 Mile = 1609.34 meters.
+        distance_in_meters = distance * 1609.34
         user_geo = crud.get_user_geo(email)
-        return User.query.filter(func.ST_DistanceSphere(User.address_geo, user_geo) < 804.67).all()
+        return User.query.filter(func.ST_DistanceSphere(User.address_geo, user_geo) < distance_in_meters).all()
 
 
 def get_carpooler_preference(carpooler_id):
@@ -37,10 +38,10 @@ def get_carpooler_preference(carpooler_id):
     return Car.query.get(carpooler_id)
 
 
-def get_carpool_closeby_filter(email,smoking,pets):
+def get_carpool_closeby_filter(email,smoking,pets,distance):
     """Return all address within a given distance from the user's address."""
     filtered_carpoolers = []
-    carpoolers_closeby = get_carpool_closeby(email)
+    carpoolers_closeby = get_carpool_closeby(email,distance)
     
     if (smoking == 0 and pets == 0):
         return carpoolers_closeby
@@ -48,6 +49,7 @@ def get_carpool_closeby_filter(email,smoking,pets):
     if (smoking == 1 and pets == 1):
         for carpooler in carpoolers_closeby:
             carpooler_preference = get_carpooler_preference(carpooler.user_id)
+            print(carpooler.user_id,carpooler_preference.smoking,carpooler_preference.pets )
             if (carpooler_preference.pets == False and carpooler_preference.smoking == False):
                 filtered_carpoolers.append(carpooler)
         return filtered_carpoolers
@@ -55,6 +57,7 @@ def get_carpool_closeby_filter(email,smoking,pets):
     if (smoking == 0 and pets == 1):
         for carpooler in carpoolers_closeby:
             carpooler_preference = get_carpooler_preference(carpooler.user_id)
+            print(carpooler.user_id,carpooler_preference.smoking,carpooler_preference.pets )
             if (carpooler_preference.pets == False):
                 filtered_carpoolers.append(carpooler)
         return filtered_carpoolers
@@ -62,6 +65,7 @@ def get_carpool_closeby_filter(email,smoking,pets):
     if (smoking == 1 and pets == 0):
         for carpooler in carpoolers_closeby:
             carpooler_preference = get_carpooler_preference(carpooler.user_id)
+            print(carpooler.user_id,carpooler_preference.smoking,carpooler_preference.pets )
             if (carpooler_preference.smoking == False):
                 filtered_carpoolers.append(carpooler)
         return filtered_carpoolers

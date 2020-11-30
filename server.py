@@ -51,7 +51,7 @@ def create_user():
     return redirect('/') 
 
 
-@app.route('/user', methods=['POST'])   
+@app.route('/login', methods=['POST'])   
 def user_login():
     """ Validate Login and Display User Page"""
     if (request.form.get('action') == 'login'):
@@ -72,6 +72,86 @@ def user_login():
             return render_template('user.html',buddies=buddies,number = len(buddies))
     else:
         return render_template('newuser.html')
+
+
+@app.route('/all_carpoolers' , methods=['POST'])
+def search_all_carpool():
+    """ List all carpoolers available without any filter"""
+    session['smoking_preference'] = 0
+    session['pets_preference'] = 0
+    session['distance'] = 25
+    carpoolers = userqueries.get_carpool_closeby_filter(session['username'],0,0,25)
+    return render_template('search.html', carpoolers = carpoolers)
+
+
+@app.route('/search_filter_carpool' , methods=['POST'])
+def search_carpool_filter():
+    """ List all carpoolers available with smoking, pet and distance filter"""
+    session['smoking_preference'] = 0
+    session['pets_preference'] = 0
+    
+    smoking = 0
+    pets = 0
+    
+
+    if (request.form.get('search_smoking') == 'YES'):
+        smoking = 1
+        session['smoking_preference'] = 1
+    
+    if (request.form.get('search_pets') == 'YES'):
+        pets = 1
+        session['pets_preference'] = 1
+    
+    distance = request.form.get('distance')
+    if distance == "ANY":
+        distance = 25
+    else:
+        distance = float(distance)
+
+    session['distance'] = distance
+
+    carpoolers = userqueries.get_carpool_closeby_filter(session['username'],smoking,pets,distance)
+    return render_template('search.html', carpoolers = carpoolers)
+
+
+# @app.route("/api/search_carpoolers")
+@app.route("/search_carpoolers/json")
+def search_carpoolers_info():
+    """JSON information about carpoolers."""
+
+    carpoolers = [
+        {
+            "user_id": carpooler.user_id,
+            "name": carpooler.household1,
+            "street": carpooler.address_street,
+            "city": carpooler.address_city,
+            "phone": carpooler.phone_number,
+            "email": carpooler.email,
+            "userLat": carpooler.address_latitude,
+            "userLong": carpooler.address_longitude,
+        }
+        for carpooler in  userqueries.get_carpool_closeby_filter(session['username'],session['smoking_preference'],session['pets_preference'],session['distance'])
+    ]
+
+    return jsonify(carpoolers)
+
+@app.route('/search_carpool',methods=['POST'])
+def user_carpoolers():
+    carpoolers = [
+        {
+            "user_id": carpooler.user_id,
+            "name": carpooler.household1,
+            "street": carpooler.address_street,
+            "city": carpooler.address_city,
+            "phone": carpooler.phone_number,
+            "email": carpooler.email,
+            "userLat": carpooler.address_latitude,
+            "userLong": carpooler.address_longitude,
+        }
+        for carpooler in  userqueries.get_carpool_closeby_filter(session['username'],0,0)
+    ]
+
+    return jsonify(carpoolers)
 
 
 @app.route("/api/carpoolers")
@@ -129,60 +209,6 @@ def request_person_info():
     return jsonify(carpoolers)
 
 
-@app.route("/api/search_carpoolers")
-def search_carpoolers_info():
-    """JSON information about carpoolers."""
-
-    # a = session['smoking_preference']
-    # b = session['pets_preference']
-    # print (f'Smoking is {a}')
-    # print (f'Pets is {b}')
-
-    carpoolers = [
-        {
-            "user_id": carpooler.user_id,
-            "name": carpooler.household1,
-            "street": carpooler.address_street,
-            "city": carpooler.address_city,
-            "phone": carpooler.phone_number,
-            "email": carpooler.email,
-            "userLat": carpooler.address_latitude,
-            "userLong": carpooler.address_longitude,
-        }
-        for carpooler in  userqueries.get_carpool_closeby_filter(session['username'],session['smoking_preference'],session['pets_preference'])
-    ]
-
-    return jsonify(carpoolers)
-
-
-@app.route('/search_filter_carpool' , methods=['POST'])
-def search_carpool_filter():
-    session['smoking_preference'] = 0
-    session['pets_preference'] = 0
-    smoking = 0
-    pets = 0
-    
-    print (request.form.get('search_smoking'))
-    print (request.form.get('search_pets'))
-
-    if (request.form.get('search_smoking') == 'YES'):
-        smoking = 1
-        session['smoking_preference'] = 1
-    
-    if (request.form.get('search_pets') == 'YES'):
-        pets = 1
-        session['pets_preference'] = 1
-    
-    # session['smoking_preference'] = smoking
-    # session['pets_preference'] = pets
-    carpoolers = userqueries.get_carpool_closeby_filter(session['username'],smoking,pets)
-    return render_template('search.html', carpoolers = carpoolers)
-
-
-@app.route('/search_carpool')
-def search_carpool():
-    carpoolers = userqueries.get_carpool_closeby(session['username'])
-    return render_template('search.html', carpoolers = carpoolers)
 
 
 @app.route('/individual_request', methods =['POST'])

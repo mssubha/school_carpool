@@ -17,18 +17,32 @@
 
 
 
-<!-- <form action="/search_filter_carpool" method="POST"> 
-
-<input type="checkbox" id="search_smoking" name="search_smoking" value=1>
-<label for="search_smoking"> No Smoking</label><br>
-
-<input type="checkbox" id="search_pets" name="search_pets" value=1>
-<label for="search_option"> No Pets</label><br>
-
+<form action="/search_filter_carpool" method="POST"> 
   <div class="search">   
-      <input type ="submit" name="search" value="Filter Search">
+
+    <input type="checkbox" id="search_smoking" name="search_smoking" value= 'YES'>
+    <label for="search_smoking"> No Smoking</label>
+
+    <input type="checkbox" id="search_pets" name="search_pets" value= 'YES'>
+    <label for="search_option"> No Pets</label>
+    <br>
+    <label for="distance">Distance in miles:</label>
+        <select name="distance" id="distance">
+            <option value="0.5">0.5</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="ANY" selected="selected">ANY</option>
+        </select>
+    
+    <br><br>
+
+      <input type ="submit" name="search" value="Search for Carpool">
   </div>   
-</form>   -->
+</form>   
+
+<br>
+<br>
 
 <div class = "map" id="search_map"></div>
 
