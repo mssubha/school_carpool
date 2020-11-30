@@ -2,15 +2,18 @@
 import os
 from twilio.rest import Client
 
-account_sid = os.environ['twilio_sid'] 
-auth_token = os.environ['twilio_api']  
+def send_message (phone_number, message):
 
-client = Client(account_sid, auth_token)
+    account_sid = os.environ['twilio_sid'] 
+    auth_token = os.environ['twilio_api']  
+    twilio_phone = os.environ['twilio_phone'] 
 
-message = client.messages.create(
-    from_='+12058273855',
-    body= 'Hi from Subha Twilio',
-    to='+14152509456'
-)
+    client = Client(account_sid, auth_token)
 
-print(message.sid)
+    message = client.messages.create(
+        from_=twilio_phone,
+        body= message,
+        to=phone_number 
+    )
+
+    print(message.sid)
