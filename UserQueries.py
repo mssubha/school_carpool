@@ -24,6 +24,12 @@ def get_user_buddies(email):
     buddies = db.session.execute(sql, {"user_id": user_id}).fetchall()
     return(buddies)
 
+def distance_between_addresses(user_geo, carpooler_geo):
+    query = db.session.query(func.ST_DistanceSphere(user_geo, carpooler_geo))
+    for row in query:
+        distance_in_miles = row[0]/1609.34
+    return (round(distance_in_miles,2))
+# Select ST_Distance_Sphere('01010000008C1D43B6629E5EC0A85C3C17A1FD4240','01010000004CCC0E4C499E5EC05B2DB0C744FE4240')/1609.34 as dist;
 
 def get_carpool_closeby(email, distance = 25):
         """Return all address within a given distance from the user's address."""
@@ -44,6 +50,7 @@ def get_carpool_closeby(email, distance = 25):
             if (user.email not in buddies_email and user.email != email):
                 return_users.append(user)
         return(return_users)
+
 
 
 

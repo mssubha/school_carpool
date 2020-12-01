@@ -62,7 +62,7 @@ def user_login():
         email = request.form.get('username')
         password = request.form.get('password')
         existing_user = crud.get_user_by_email(email)
-    
+        
         if (existing_user == None):
             # flash("User not found. Create an account")
             return render_template('homepage.html', message = "User not found. Create an account" ) 
@@ -109,6 +109,10 @@ def search_all_carpool():
     session['pets_preference'] = 0
     session['distance'] = 25
     carpoolers = userqueries.get_carpool_closeby_filter(session['username'],0,0,25)
+    user_geo = crud.get_user_by_email(session['username']).address_geo
+    for carpooler in carpoolers:
+        carpooler.address_longitude = userqueries.distance_between_addresses(user_geo,carpooler.address_geo)
+
     return render_template('search.html', carpoolers = carpoolers)
 
 
@@ -138,8 +142,11 @@ def search_carpool_filter():
         distance = float(distance)
 
     session['distance'] = distance
-
+    user_geo = crud.get_user_by_email(session['username']).address_geo
     carpoolers = userqueries.get_carpool_closeby_filter(session['username'],smoking,pets,distance)
+    for carpooler in carpoolers:
+        carpooler.address_longitude = userqueries.distance_between_addresses(user_geo,carpooler.address_geo)
+
     return render_template('search.html', carpoolers = carpoolers)
 
 
