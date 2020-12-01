@@ -5,6 +5,7 @@ from datetime import datetime
 from model import connect_to_db
 import crud
 import userqueries
+import send_message
 from jinja2 import StrictUndefined
 import os
 
@@ -142,6 +143,7 @@ def search_carpoolers_info():
 
 
 
+
 @app.route('/search_carpool',methods=['POST'])
 def user_carpoolers():
     carpoolers = [
@@ -216,14 +218,13 @@ def request_person_info():
     return jsonify(carpoolers)
 
 
-
-
 @app.route('/individual_request', methods =['POST'])
 def display_individual_user():
     request_user_id=request.form.get('carpoolrequest')
     request_user = crud.get_user_by_id(request_user_id)
+    session['send_request_phone'] = request_user.phone_number
     request_user_children = request_user.children
-    login_user = crud.get_user_by_email( session['username'])
+    login_user = crud.get_user_by_email(session['username'])
     session['send_request_to'] = request_user_id
     return render_template('send_request.html', request_user = request_user, request_user_children = request_user_children,login_user=login_user  )
 
@@ -239,11 +240,11 @@ def send_request():
     child_id = login_user.children[0].child_id
     request_note = notes
     request_datetime = datetime.now() 
-    print (notes)
     crud.create_request(from_user,to_user,child_id,request_note,"","S",request_datetime)
 
     buddies = userqueries.get_user_buddies(session['username'])
-    return render_template('user.html',buddies=buddies)
+    send_message.send_message(session['send_request_phone'],request_note)
+    return render_template('user.html',buddies=buddies,number = len(buddies))
    
 
 @app.route('/accept_deny_request', methods=['POST'])
