@@ -3,7 +3,7 @@ import os
 from twilio.rest import Client
 
 def send_message (phone_number, message):
-
+    """ send a message to the phone_number using twilio """
     account_sid = os.environ['twilio_sid'] 
     auth_token = os.environ['twilio_api']  
     twilio_phone = os.environ['twilio_phone'] 

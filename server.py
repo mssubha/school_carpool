@@ -78,6 +78,29 @@ def user_login():
         return render_template('newuser.html')
 
 
+""" Return JSON of carpool buddies """
+@app.route("/carpoolers/json")
+# @app.route("/api/carpoolers")
+def carpoolers_info():
+    """JSON information about carpool buddies."""
+
+    carpoolers = [
+        {
+            "user_id": carpooler.user_id,
+            "name": carpooler.household1,
+            "street": carpooler.address_street,
+            "city": carpooler.address_city,
+            "phone": carpooler.phone_number,
+            "email": carpooler.email,
+            "userLat": carpooler.address_latitude,
+            "userLong": carpooler.address_longitude,
+        }
+        for carpooler in userqueries.get_user_buddies(session['username'])
+    ]
+
+    return jsonify(carpoolers)
+
+
 """ Display all carpoolers"""
 @app.route('/all_carpoolers' , methods=['POST'])
 def search_all_carpool():
@@ -120,7 +143,7 @@ def search_carpool_filter():
     return render_template('search.html', carpoolers = carpoolers)
 
 
-""" Return JSON of carpoolers """
+""" Return JSON of carpoolers nearby """
 @app.route("/search_carpoolers/json")
 def search_carpoolers_info():
     """JSON information about carpoolers."""
@@ -180,8 +203,8 @@ def send_request():
 def request_person_info():
     request_user = crud.get_user_by_id(session['send_request_to'])
     login_user = crud.get_user_by_email(session['username'])
-    a = session['send_request_to']
-    b = session['username']
+    # a = session['send_request_to']
+    # b = session['username']
     # print (f'send_to {a} and user in {b}')
     carpoolers = [
         {
@@ -230,28 +253,6 @@ def user_carpoolers():
             "userLong": carpooler.address_longitude,
         }
         for carpooler in  userqueries.get_carpool_closeby_filter(session['username'],0,0)
-    ]
-
-    return jsonify(carpoolers)
-
-
-@app.route("/api/carpoolers")
-def carpoolers_info():
-    """JSON information about carpoolers."""
-
-    carpoolers = [
-        {
-            "user_id": carpooler.user_id,
-            "name": carpooler.household1,
-            "street": carpooler.address_street,
-            "city": carpooler.address_city,
-            "phone": carpooler.phone_number,
-            "email": carpooler.email,
-            "userLat": carpooler.address_latitude,
-            "userLong": carpooler.address_longitude,
-        }
-        for carpooler in userqueries.get_user_buddies(session['username'])
-        # for carpooler in userqueries.get_user_buddies('6tester6@test.com')
     ]
 
     return jsonify(carpoolers)
