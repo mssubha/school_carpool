@@ -28,12 +28,6 @@ class User(db.Model):
     
     car = db.relationship('Car')
     children = db.relationship('Child')
-    # 'requestedusers' = db.relationship('Request') backref from Requests
-    # 'responsedusers' = db.relationship('Request') backref from Requests
-# test_user = User(email = 'user3@test.com',password = '123', household1 = 'User3',
-#                  household2 = 'User2', phone_number = '415-340-4344',
-#                  address_street = '3 Adrian Way',address_city ='San rafael',
-#                  address_state = 'CA',address_zip ='94903',address_latitude=0,address_longitude =0)
 
     def __repr__(self):
         return f'<user_id:{self.user_id} email:{self.email}, address_geo:{self.address_geo}>'
@@ -98,7 +92,7 @@ class Request(db.Model):
 
 # request1 = Request(from_user=1,to_user=2,child_id =1,request_note="can we?",decision_note = " ",request_status = "S")
 
-def connect_to_db(flask_app, db_uri='postgresql:///dbcarpool', echo=True):
+def connect_to_db(flask_app, db_uri='postgresql:///schoolpool', echo=True):
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
     flask_app.config['SQLALCHEMY_ECHO'] = echo
     flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -118,5 +112,5 @@ if __name__ == '__main__':
     connect_to_db(app)
     # source secrets.sh
     # CREATE EXTENSION postgis; - run this inside the database
-    # db.create_all()
+    db.create_all()
    

@@ -1,3 +1,29 @@
+/* body
+{
+  
+  background-color: #0cbaba; background-image: linear-gradient(315deg, #0cbaba 0%, #380036 74%);
+  https://www.eggradients.com/ 
+} */
+
+body
+{
+  background: no-repeat center/cover url('/static/img/background5.jpg');
+  font-family: 'Noto Sans', sans-serif;
+}
+
+.top-buffer { margin-top:40px; }
+
+
+h1{
+  font-family: 'Roboto Mono', monospace;
+  font-size: 30px;
+} 
+
+form label{
+  font-weight:bold;
+}
+
+
 div.window-content {
     overflow: hidden;
     display: flex;
@@ -46,4 +72,8 @@ div.window-content {
   transition: 0.3s;
 } 
   
-  
+.btn-secondary:hover {
+  color: #d0d8e1;
+  background-color: #287428;
+  border-color: #8ad3d3
+}
