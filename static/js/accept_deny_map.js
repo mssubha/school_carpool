@@ -22,7 +22,7 @@ function initMap() {
 
   // Retrieving the information with AJAX.
   // If you want to see what `/api/carpoolers` returns, you should check `server.py`
-  $.get('/api/request_peson', (carpoolers) => {
+  $.get('/accept_deny_peson/json', (carpoolers) => {
     for (const carpooler of carpoolers) {
       // Define the content of the infoWindow
       const userInfoContent = (`
@@ -79,8 +79,8 @@ $('individual_request_form').on('submit', (evt) => {
   };
 
   // Send formData to the server (becomes a query string)
-  $.post('/send_request', formInputs, (res) => {
-    // Display response from the server
-    alert(`Sent the user_id to server`);
-  });
+  // $.post('/send_request', formInputs, (res) => {
+  //   // Display response from the server
+  //   alert(`Sent the user_id to server`);
+  // });
 });

@@ -31,7 +31,7 @@ def distance_between_addresses(user_geo, carpooler_geo):
     return (round(distance_in_miles,2))
 # Select ST_Distance_Sphere('01010000008C1D43B6629E5EC0A85C3C17A1FD4240','01010000004CCC0E4C499E5EC05B2DB0C744FE4240')/1609.34 as dist;
 
-def get_carpool_closeby(email, distance = 25):
+def get_carpool_closeby(email, distance,grade):
         """Return all address within a given distance from the user's address."""
         # ST_DistanceSphere compares distance in meters. 1 Mile = 1609.34 meters.
         distance_in_meters = distance * 1609.34
@@ -45,10 +45,16 @@ def get_carpool_closeby(email, distance = 25):
             buddies_email.append(buddies[buddy][6])
 
         return_users = []
-
+        return_users_email = []
         for user in all_users:
             if (user.email not in buddies_email and user.email != email):
-                return_users.append(user)
+                if grade > 0 :
+                    for child in user.children:
+                        if child.grade == grade and user.email not in return_users_email :
+                            return_users_email.append(user.email)
+                            return_users.append(user)
+                else:
+                    return_users.append(user)
 
         return(return_users)
 
@@ -58,10 +64,10 @@ def get_carpooler_preference(carpooler_id):
     return Car.query.get(carpooler_id)
 
 
-def get_carpool_closeby_filter(email,smoking,pets,distance):
+def get_carpool_closeby_filter(email,smoking,pets,distance,grade):
     """Return all address within a given distance from the user's address."""
     filtered_carpoolers = []
-    carpoolers_closeby = get_carpool_closeby(email,distance)
+    carpoolers_closeby = get_carpool_closeby(email,distance,grade)
     
     if (smoking == 0 and pets == 0):
         return carpoolers_closeby
@@ -99,6 +105,19 @@ def get_requests_recieved(email):
     carpool_requests = db.session.execute(sql, {"user_id": user_id}).fetchall()
     return(carpool_requests)
 
+
+def respond_denial_to_others(from_user,to_user):
+    
+    sql = """UPDATE requests
+             SET request_status = 'SD', decision_note = 'Sorry! Chose Another Carpooler'
+             WHERE request_status = 'S'
+             AND from_user <> :to_user
+             AND to_user = :from_user""" 
+    
+    db.session.execute(sql, {"to_user": to_user, "from_user":from_user})
+    db.session.commit()
+
+    return
 
 if __name__ == '__main__':
     from server import app

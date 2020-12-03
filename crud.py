@@ -53,9 +53,9 @@ def get_user_geo(email):
     geo = user.address_geo
     return(geo)
 
-def check_login_details(email,password):
-    login_user = get_user_by_email(email)
-    return (login_user.password == (password))
+
+
+
 
 
 def create_user_car(email,car_make,car_model,license_plate,smoking,pets,seats):
@@ -80,7 +80,6 @@ def get_car_by_id(user_id):
     return Car.query.get(user_id)
 
 
-
 def create_user_child(email, childname, grade):
     """ Create a record for each child of the user """
     user = get_user_by_email(email)
@@ -101,6 +100,11 @@ def get_children_of_user(user_id):
     """ Return user by id"""
     return Child.query.filter_by(user_id=user_id).all()
 
+
+def check_login_details(email,password):
+    login_user = get_user_by_email(email)
+    return (login_user.password == (password))
+    
 
 def create_request(from_user,to_user,child_id,request_note,decision_note,request_status,request_datetime):
 

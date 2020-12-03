@@ -47,6 +47,7 @@ nav a:hover, nav button:hover {
 
 /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
+       
 .map, #map {
   width: 50%;
   height: 50%;

@@ -80,7 +80,6 @@ def user_login():
 
 """ Return JSON of carpool buddies """
 @app.route("/carpoolers/json")
-# @app.route("/api/carpoolers")
 def carpoolers_info():
     """JSON information about carpool buddies."""
 
@@ -101,14 +100,15 @@ def carpoolers_info():
     return jsonify(carpoolers)
 
 
-""" Display all carpoolers"""
+""" Display all carpoolers to whom you can send request"""
 @app.route('/all_carpoolers' , methods=['POST'])
 def search_all_carpool():
     """ List all carpoolers available without any filter"""
     session['smoking_preference'] = 0
     session['pets_preference'] = 0
     session['distance'] = 25
-    carpoolers = userqueries.get_carpool_closeby_filter(session['username'],0,0,25)
+    session['grade'] = 0
+    carpoolers = userqueries.get_carpool_closeby_filter(session['username'],0,0,25,0)
     user_geo = crud.get_user_by_email(session['username']).address_geo
     for carpooler in carpoolers:
         carpooler.address_longitude = userqueries.distance_between_addresses(user_geo,carpooler.address_geo)
@@ -117,7 +117,7 @@ def search_all_carpool():
     return render_template('search.html', carpoolers = carpoolers)
 
 
-""" Display carpoolers with filter """
+""" Display carpoolers with filter to whom you can send request"""
 @app.route('/search_filter_carpool' , methods=['POST'])
 def search_carpool_filter():
     """ List all carpoolers available with smoking, pet and distance filter"""
@@ -142,12 +142,21 @@ def search_carpool_filter():
     else:
         distance = float(distance)
 
+    grade = request.form.get('grade')
+    if grade == "ANY":
+        grade = 0
+    else:
+        grade = int(grade)
+
+    session['grade'] = grade
     session['distance'] = distance
+
     user_geo = crud.get_user_by_email(session['username']).address_geo
-    carpoolers = userqueries.get_carpool_closeby_filter(session['username'],smoking,pets,distance)
+    carpoolers = userqueries.get_carpool_closeby_filter(session['username'],smoking,pets,distance,grade)
     for carpooler in carpoolers:
         carpooler.address_longitude = userqueries.distance_between_addresses(user_geo,carpooler.address_geo)
         carpooler.latitude = carpooler.car[0].seats
+
 
     return render_template('search.html', carpoolers = carpoolers)
 
@@ -168,7 +177,7 @@ def search_carpoolers_info():
             "userLat": carpooler.address_latitude,
             "userLong": carpooler.address_longitude,
         }
-        for carpooler in  userqueries.get_carpool_closeby_filter(session['username'],session['smoking_preference'],session['pets_preference'],session['distance'])
+        for carpooler in  userqueries.get_carpool_closeby_filter(session['username'],session['smoking_preference'],session['pets_preference'],session['distance'],session['grade'])
     ]
 
     return jsonify(carpoolers)
@@ -202,12 +211,11 @@ def send_request():
     crud.create_request(from_user,to_user,child_id,request_note,"","S",request_datetime)
 
     buddies = userqueries.get_user_buddies(session['username'])
-    send_message.send_message(session['send_request_phone'],request_note)
+    # send_message.send_message(session['send_request_phone'],request_note)
     return render_template('user.html',buddies=buddies,number = len(buddies))
 
 
 """ Return JSON of the login user and the user to whom request is sent """
-# @app.route("/api/request_peson")
 @app.route("/request_peson/json")
 def request_person_info():
     request_user = crud.get_user_by_id(session['send_request_to'])
@@ -241,6 +249,81 @@ def request_person_info():
     return jsonify(carpoolers)
 
 
+""" Display all carpoolers who have sent you a request to carpool"""
+@app.route('/accept_deny_request', methods=['POST'])
+def show_requests():
+    """ Display all carpoolers who have sent you a request to carpool"""
+    carpoolers = userqueries.get_requests_recieved(session['username'])
+    return render_template('requests.html', carpoolers = carpoolers)
+
+
+""" Choose a carpooler to whom the user will respond to"""
+@app.route('/individual_accept_deny', methods= ['POST'])
+def accept_deny_request():
+    """ Choose a carpooler to whom the user will respond to"""
+    request_user_id=request.form.get('carpoolrequest')
+    request_user = crud.get_user_by_id(request_user_id)
+    session['send_decision_phone'] = request_user.phone_number
+    request_user_children = request_user.children
+    login_user = crud.get_user_by_email( session['username'])
+    session['accept_deny_userid'] = request_user_id
+    return render_template('accept_deny.html', request_user = request_user, request_user_children = request_user_children,login_user=login_user)
+
+
+""" Return JSON of the login user and the user whose request is viewed"""
+@app.route("/accept_deny_peson/json")
+def accept_deny_person_info():
+    request_user = crud.get_user_by_id(session['accept_deny_userid'])
+    login_user = crud.get_user_by_email(session['username'])
+    carpoolers = [
+        {
+            "user_id": request_user.user_id,
+            "name": request_user.household1,
+            "street": request_user.address_street,
+            "city": request_user.address_city,
+            "phone": request_user.phone_number,
+            "email": request_user.email,
+            "userLat": request_user.address_latitude,
+            "userLong": request_user.address_longitude,
+        },
+        {
+            "user_id": login_user.user_id,
+            "name": login_user.household1,
+            "street": login_user.address_street,
+            "city": login_user.address_city,
+            "phone": login_user.phone_number,
+            "email": login_user.email,
+            "userLat": login_user.address_latitude,
+            "userLong": login_user.address_longitude,
+        }
+    ]
+
+    return jsonify(carpoolers)
+
+
+
+@app.route('/accept_deny_individual', methods= ['POST'])
+def accept_deny_individual_request():
+    accept_or_deny = request.form.get('send_request')
+    if (accept_or_deny == "Accept"):
+        request_code = "A"
+    else:
+        request_code = "D"
+
+    notes = request.form.get('decission_note')
+
+    login_user = crud.get_user_by_email(session['username'])
+    from_user = login_user.user_id
+    to_user = session['accept_deny_userid']
+    child_id = login_user.children[0].child_id
+    request_note = notes
+    request_datetime = datetime.now() 
+    crud.create_request(from_user,to_user,child_id,request_note,"",request_code,request_datetime)
+    userqueries.respond_denial_to_others(from_user,to_user)
+    # send_message.send_message(session['send_decision_phone'],request_note)
+    buddies = userqueries.get_user_buddies(session['username'])
+    return render_template('user.html',buddies=buddies,number = len(buddies))
+   
 
 
 
@@ -267,51 +350,10 @@ def user_carpoolers():
     return jsonify(carpoolers)
 
 
-@app.route('/accept_deny_request', methods=['POST'])
-def show_requests():
-    """ Show all the requests that a user has recieved"""
-    carpoolers = userqueries.get_requests_recieved(session['username'])
-    return render_template('requests.html', carpoolers = carpoolers)
-
-
-@app.route('/individual_accept_deny', methods= ['POST'])
-def accept_deny_request():
-    """ User can accept or deny a request """
-    request_user_id=request.form.get('carpoolrequest')
-    request_user = crud.get_user_by_id(request_user_id)
-    request_user_children = request_user.children
-    login_user = crud.get_user_by_email( session['username'])
-    session['accept_deny_userid'] = request_user_id
-    return render_template('accept_deny.html', request_user = request_user, request_user_children = request_user_children,login_user=login_user)
-
-
 @app.route('/logout') 
 def logout():  
     return render_template('logout.html')
 
-
-# @app.route('/accept_deny_individual', methods= ['POST'])
-# def accept_deny_individual_request():
-#     accept_or_deny = request.form.get('send_request')
-#     if (accept_or_deny == "Accept"):
-#         request_code = "A"
-#     else:
-#         request_code = "D"
-
-#     notes = request.form.get('request_note')
-
-#     login_user = crud.get_user_by_email(session['username'])
-#     from_user = login_user.user_id
-#     to_user = session['accept_deny_userid']
-#     child_id = login_user.children[0].child_id
-#     request_note = notes
-#     request_datetime = datetime.now() 
-#     print (notes)
-#     crud.create_request(from_user,to_user,child_id,request_note,"","S",request_datetime)
-
-#     buddies = userqueries.get_user_buddies(session['username'])
-#     return render_template('user.html',buddies=buddies)
-   
 
 
 if __name__ == '__main__':
