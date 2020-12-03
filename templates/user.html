@@ -12,21 +12,27 @@
 {% endblock %}
 
 {% block body %}
- <h2> You have {{number}} carpool buddies</h2>
 
 
-<ul>
+  <div class = "map" id="map"></div>
+
+
+  <!--  -->
+    
+  
+
+  <h2> You have {{number}} carpool buddies</h2>
+
+ 
+
+  <ul>
     {% for buddy in buddies %}
       <li>
-        
         {{buddy.household1}} {{buddy.address_street}}  {{buddy.address_city}} {{buddy.phone_number}} {{buddy.email}} 
-       
       </li>
     {% endfor %}
   </ul> 
 
-<div class = "map" id="map"></div>
-  
 
 
 <form action="/all_carpoolers" method="POST"> 

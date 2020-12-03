@@ -49,9 +49,8 @@ def get_carpool_closeby(email, distance = 25):
         for user in all_users:
             if (user.email not in buddies_email and user.email != email):
                 return_users.append(user)
+
         return(return_users)
-
-
 
 
 def get_carpooler_preference(carpooler_id):
@@ -99,6 +98,7 @@ def get_requests_recieved(email):
   
     carpool_requests = db.session.execute(sql, {"user_id": user_id}).fetchall()
     return(carpool_requests)
+
 
 if __name__ == '__main__':
     from server import app

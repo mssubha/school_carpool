@@ -112,7 +112,8 @@ def search_all_carpool():
     user_geo = crud.get_user_by_email(session['username']).address_geo
     for carpooler in carpoolers:
         carpooler.address_longitude = userqueries.distance_between_addresses(user_geo,carpooler.address_geo)
-
+        carpooler.latitude = carpooler.car[0].seats
+        
     return render_template('search.html', carpoolers = carpoolers)
 
 
@@ -146,6 +147,7 @@ def search_carpool_filter():
     carpoolers = userqueries.get_carpool_closeby_filter(session['username'],smoking,pets,distance)
     for carpooler in carpoolers:
         carpooler.address_longitude = userqueries.distance_between_addresses(user_geo,carpooler.address_geo)
+        carpooler.latitude = carpooler.car[0].seats
 
     return render_template('search.html', carpoolers = carpoolers)
 
