@@ -1,6 +1,6 @@
-{% extends 'base.html' %}
+{% extends 'basee.html' %}
 
-{% block title %}Kids Carpool - Go Green and Have Fun!{% endblock %}
+{% block title %}{% endblock %}
 
 {% block head %}
 
@@ -14,21 +14,27 @@
 
 
 
+<div class="container">
 <form action="/create_user" method="POST"> 
 
     <div class="new_user">  
-        <label>Email : </label>  
-        <input type="text" placeholder="Enter email" name="email" required> 
-        <label>Password : </label>  
-        <input type="password" placeholder="Enter password" name="password" required> <br><br> 
-        <label>Primary Contact : </label>   
-        <input type="text" placeholder="Enter name" name="name1" required> 
-        <label>Additional Contact : </label>   
-        <input type="text" placeholder="Enter name" name="name2" > <br><br>
+       
+                <label>Email : </label>  
+                <input type="text" placeholder="Enter email" name="email" required> 
+                <label>Password : </label>  
+                <input type="password" placeholder="Enter password" name="password" required>  <br><br>
+           
+                <label>Primary Contact : </label>   
+                <input type="text" placeholder="Enter name" name="name1" required> 
+
+           
+                <label>Additional Contact : </label>   
+                <input type="text" placeholder="Enter name" name="name2" > <br><br>
+    
         <label>Phone Number : </label>  
         <input type="text" placeholder="Enter phone number" name="phone" required> <br><br>
         <label>Street : </label>  
-        <input type="text" placeholder="Enter street" name="street" required> <br><br> 
+        <input type="text" placeholder="Enter street" name="street" required> 
         <label>City : </label>  
         <input type="text" placeholder="Enter city" name="city" required> <br><br> 
         <label for="state">State:</label>
@@ -101,7 +107,7 @@
         <input type="radio" name="smoking" value=1>
         <label for="smoking">Yes</label>
         <input type="radio" name="smoking" value=0 checked="checked">
-        <label for="smoking">No</label> <br><br>
+        <label for="smoking">No</label> 
 
         <label> Pets:</label>
         <input type="radio" name="pets" value=1>
@@ -112,10 +118,20 @@
         <label>Child Name : </label>  
         <input type="text" placeholder="Enter Child Name" name="childname" required> 
         <label>Child Grade : </label>  
-        <input type="text" placeholder="Enter Child Grade" name="childgrade" required> <br><br>
+        <input type="text" placeholder="Enter Child Grade" name="childgrade" required> 
+        <input type ="submit" class="btn btn-secondary" name="children" value= "+"> <br><br>
 
-        <input type ="submit" name="action" value="Create User">
+        <!-- <input type ="submit" name="action" value="Create User"> -->
+        <div class="row text-center ">
+            <div class="col text-center">
+                <button type="submit" class="btn btn-secondary"
+                name="action" value="Create User" >Create User</button>
+            </div>
+            <div class="col text-center"></div>
+            <div class="col text-center"></div>
+        </div>
 
     </div>   
 </form>
+</div>
 {% endblock %}
