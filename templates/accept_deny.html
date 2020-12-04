@@ -12,28 +12,77 @@
 {% endblock %}
 
 {% block body %}
- <h2> {{ login_user.household1 }}, interested carpoolers are: {{ request_user.household1 }} </h2>
 
-<ul>
-    {% for child in request_user_children %}
-      <li>
-        {{child.name}} {{child.grade}} 
-      </li>
-    {% endfor %}
-  </ul> 
+ <div class = "container">
+  <h3> {{ login_user.household1 }},  {{ request_user.household1 }} is interested to carpool with you </h3>
 
-<div class = "map" id="accept_deny_map"></div>
-  
+  <div class="row top-buffer">
+    
+    <div class="col text-center">
+      
+      <table class="table table-striped table-sm">
+        <thead>
+          <tr>
+            <th class="w-10">#</th>
+            <th class="w-20">Child Name</th>
+            <th class="w-20">Child Grade</th>
+            <th class="w-50"></th>
+          </tr>
+        </thead>
 
+        <tbody>
+          {% set count = namespace(value=1) %}
+          {% for child in request_user_children %}
+          <tr>
+            <th scope="row">{{ count.value }}</th>
+            <td> {{child.name}}</td>
+            <td>{{child.grade}} </td>
+            <td> </td>
+          </tr>
+            {% set count.value = count.value + 1 %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col text-center">
+    <div id="accept_deny_map" class="z-depth-1-half map-container-6" style="height: 400px">
+      <iframe 
+        frameborder="0" style="border:0" allowfullscreen></iframe>
+    </div>
+  </div>
+    <!-- <div class="col text-center map" id="accept_deny_map"> -->
+
+    </div>
+  </div>
+</div>
+
+
+<!-- <div class = "map" id="accept_deny_map"></div> -->
+<div class = "container">
 <form id = "individual_request_form" action="/accept_deny_individual" method="POST"> 
   <br>
-  <textarea id="decission_note" name="decission_note" rows="2" cols="70">
-    Write any additional information here 
-  </textarea><br>
-    <input type ="submit" name="send_request" value="Accept">
-    <input type ="submit" name="send_request" value="Deny">
+  <div class="row ">
+     <div class="col text-center">
+        <textarea id="decission_note" name="decission_note" rows="2" cols="70">
+          additional information 
+        </textarea><br>
+      </div>
+      <div class="col text-center">
+        <button type="submit" class="btn btn-secondary"
+        name="send_request" value="Accept" >Accept Request</button>
+
+        <!-- <input type ="submit" name="send_request" value="Accept"> -->
+      </div>
+      <div class="col text-center">
+        <button type="submit" class="btn btn-secondary"
+        name="send_request" value="Deny" >Deny Request</button>
+        <!-- <input type ="submit" name="send_request" value="Deny"> -->
+      </div>
+  </div>
 </form> 
 
+</div>
 {% endblock %}
 
 
