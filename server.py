@@ -285,6 +285,7 @@ def accept_deny_person_info():
             "email": request_user.email,
             "userLat": request_user.address_latitude,
             "userLong": request_user.address_longitude,
+            "phone": "1222424",
         },
         {
             "user_id": login_user.user_id,
@@ -295,6 +296,7 @@ def accept_deny_person_info():
             "email": login_user.email,
             "userLat": login_user.address_latitude,
             "userLong": login_user.address_longitude,
+            "phone": "123433",
         }
     ]
 

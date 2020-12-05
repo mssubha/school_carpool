@@ -65,6 +65,7 @@ nav a:hover, nav button:hover {
   position:relative;
   height:0;
   }
+
   .map-container-6 iframe{
   left:0;
   top:0;
@@ -77,6 +78,7 @@ nav a:hover, nav button:hover {
   width: 50%;
   height: 50%;
 } */
+
 /* Optional: Makes the sample page fill the window. */
 html,
 body {

@@ -12,39 +12,37 @@
 {% endblock %}
 
 {% block body %}
-
+ 
+  {% if number > 0 %}
+  <h5> You have a carpool buddy</h5>
+  <ul>
+    {% for buddy in buddies %}
+      <li>
+        <h5> {{buddy.household1}} is your carpool buddy. </h5>
+        <h5> Address: {{buddy.address_street}}, {{buddy.address_city}}</h5> 
+        <h5> Email:  {{buddy.email}}           Phone : {{buddy.phone_number}}  </h5>
+      </li>
+    {% endfor %}
+  </ul> 
+  {% endif %}
+ 
+  {% if number == 0 %}
+  <h5> You don't have a carpool buddy yet</h5>
+  {% endif %}
 
   <div class = "map" id="map"></div>
 
-
-  <!--  -->
-    
-  
-
-  <h2> You have {{number}} carpool buddies</h2>
-
- 
-
-  <ul>
+  <!-- <ul>
     {% for buddy in buddies %}
       <li>
         {{buddy.household1}} {{buddy.address_street}}  {{buddy.address_city}} {{buddy.phone_number}} {{buddy.email}} 
       </li>
     {% endfor %}
-  </ul> 
-
-
+  </ul>  -->
 
 <form action="/all_carpoolers" method="POST"> 
   
     <div class="search">   
-
-      <!-- <input type="checkbox" id="search_smoking" name="search_smoking" value= 'YES' hidden>
-      <label for="search_smoking"> No Smoking</label>
-
-      <input type="checkbox" id="search_pets" name="search_pets" value= 'YES' hidden>
-      <label for="search_option"> No Pets</label><br><br> -->
-
         <input type ="submit" name="search" value="Search for Carpool">
     </div>   
 </form>   

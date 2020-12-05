@@ -8,7 +8,7 @@ function initMap() {
     map = new google.maps.Map(document.getElementById("accept_deny_map"), {
     center: {lat: 38.00784, lng: -122.522375},
     scrollwheel: false,
-    zoom: 14,
+    zoom: 13,
     zoomControl: true,
     panControl: false,
     streetViewControl: false,
