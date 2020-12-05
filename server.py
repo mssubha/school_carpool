@@ -72,8 +72,11 @@ def user_login():
         else:
             session['username'] = email
             buddies = userqueries.get_user_buddies(email)
-            
-            return render_template('user.html',buddies=buddies,number = len(buddies))
+            if len(buddies) > 0:
+                request_user_children = crud.get_user_by_id(buddies[0].user_id).children
+            else:
+                request_user_children = []
+            return render_template('user.html',buddies=buddies,number = len(buddies),request_user_children=request_user_children)
     else:
         return render_template('newuser.html')
 
