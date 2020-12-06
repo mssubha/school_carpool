@@ -21,7 +21,7 @@
         
           {% for buddy in buddies %}
             
-              <h4> {{buddy.household1}} is your carpool buddy. </h4>
+              <h5><u> {{buddy.household1}} is your carpool buddy. </u></h4>
               <h5> Address: {{buddy.address_street}}, {{buddy.address_city}}</h5> 
               <h5> Email   :  {{buddy.email}} </h5>
               <h5> Phone   : {{buddy.phone_number}}</h5>
@@ -64,7 +64,7 @@
       </div>
     </div>
 </div>
-
+<br>
 <div class = "container">
     {% if number == 0 %}
       <div class="row top-buffer">
@@ -90,36 +90,29 @@
     {% endif %}
 
     {% if number > 0 %}
-
-      <form id = "send_additional_message"> <br>
-        <div class="row ">
-          <div class="col text-center">
-              <textarea class = "transparent-input" id="decission_note" name="decission_note" rows="2" cols="60" rounded>
-                Type in the message to be sent
-              </textarea><br>
+      
+       <form action = "/send_additional_message" method="POST"> 
+          <div class="row ">
+            <div class="col text-center">
+                <textarea class = "transparent-input" id="additional_note" name="additional_note" rows="2" cols="40" rounded>
+                  Message
+                </textarea><br>
+            </div>
+      
+            <div class="col text-center">
+                <button type="submit" class="btn btn-secondary"
+                name="send_message" value="send" >Send Text Message</button>
+            </div>
+          
+            <div class="col text-center">
+                <button type="submit" class="btn btn-secondary"
+                name="send_message" value="cancel" >Cancel Carpool</button>
+            </div>
           </div>
-    
-          <div class="col text-center">
-            <button type="submit" class="btn btn-secondary"
-            name="send_message" value="Send" >Send Text Message</button>
-          </div>
-        </div>
-      </form>
+        </form>
     {% endif %}
-  </div>
+</div>
 {% endblock %}
-<!-- <form action="/all_carpoolers" method="POST"> 
-  
-    <div class="search">   
-        <input type ="submit" name="search" value="Search for Carpool">
-    </div>   
-</form>   
-
-<form action="/accept_deny_request" method="POST"> 
-    <div class="search">   
-        <input type ="submit" name="response" value="Accept Deny Request">
-    </div>   
-</form>  -->
 
 
 

@@ -24,6 +24,7 @@ def get_user_buddies(email):
     buddies = db.session.execute(sql, {"user_id": user_id}).fetchall()
     return(buddies)
 
+
 def distance_between_addresses(user_geo, carpooler_geo):
     query = db.session.query(func.ST_DistanceSphere(user_geo, carpooler_geo))
     for row in query:
@@ -117,6 +118,19 @@ def respond_denial_to_others(from_user,to_user):
     db.session.execute(sql, {"to_user": to_user, "from_user":from_user})
     db.session.commit()
 
+    return
+
+def cancel_carpool(from_user,to_user,message):
+
+    sql = """UPDATE requests
+             SET request_status = 'C', decision_note = :message
+             WHERE request_status = 'A'
+             AND from_user = :to_user
+             AND to_user = :from_user""" 
+    
+    db.session.execute(sql, {"to_user": to_user, "from_user":from_user, "message":message})
+    db.session.execute(sql, {"to_user": from_user, "from_user":to_user, "message":message})
+    db.session.commit()
     return
 
 if __name__ == '__main__':

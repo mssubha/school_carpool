@@ -87,7 +87,7 @@ div.window-content {
 /* The alert message box */
 .flash-msg {
   padding: 20px;
-  background-color: #f44336; 
+  background-color: gray; 
   color: white;
   margin-bottom: 15px;
 } 

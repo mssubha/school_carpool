@@ -64,22 +64,47 @@ def user_login():
         existing_user = crud.get_user_by_email(email)
         
         if (existing_user == None):
-            # flash("User not found. Create an account")
             return render_template('homepage.html', message = "User not found. Create an account" ) 
         elif (crud.check_login_details(email,password) == False):
-            # flash ("Invalid Password")
             return render_template('homepage.html', message = "Invalid Password") 
         else:
+            session['user_id'] =existing_user.user_id
             session['username'] = email
             buddies = userqueries.get_user_buddies(email)
             if len(buddies) > 0:
-                request_user_children = crud.get_user_by_id(buddies[0].user_id).children
+                buddy = crud.get_user_by_id(buddies[0].user_id)
+                session['buddy_phone']= buddy.phone_number
+                session['buddy_id'] = buddy.user_id
+                # request_user_children = crud.get_user_by_id(buddies[0].user_id).children
+                request_user_children = buddy.children
             else:
                 request_user_children = []
             return render_template('user.html',buddies=buddies,number = len(buddies),request_user_children=request_user_children)
     else:
         return render_template('newuser.html')
 
+""" Cancel Carpool or send additional message"""
+@app.route('/send_additional_message', methods=['POST'])
+def send_additional_message():
+    message = request.form.get('additional_note')
+    action = request.form.get('send_message')
+    if (action == "cancel"):
+        print(session['user_id'])    
+        print(session['buddy_id'])
+        userqueries.cancel_carpool(session['user_id'],session['buddy_id'] ,message)
+        carpoolers = userqueries.get_carpool_closeby_filter(session['username'],0,0,25,0)
+        user_geo = crud.get_user_by_email(session['username']).address_geo
+        for carpooler in carpoolers:
+            carpooler.address_longitude = userqueries.distance_between_addresses(user_geo,carpooler.address_geo)
+            carpooler.latitude = carpooler.car[0].seats
+        # send_message.send_message(session['buddy_phone'],message)
+        flash (f"Message successfully sent to {session['buddy_phone']} ")
+        return render_template('search.html', carpoolers = carpoolers)
+    else:
+        # send_message.send_message(session['buddy_phone'],message)
+        flash (f"Message successfully sent to {session['buddy_phone']} ")
+        return redirect('/') 
+            
 
 """ Return JSON of carpool buddies """
 @app.route("/carpoolers/json")
@@ -196,6 +221,7 @@ def display_individual_user():
     request_user_children = request_user.children
     login_user = crud.get_user_by_email(session['username'])
     session['send_request_to'] = request_user_id
+    session['requesting_phone_number'] = request_user.phone_number
     return render_template('send_request.html', request_user = request_user, request_user_children = request_user_children,login_user=login_user  )
 
 
@@ -212,10 +238,9 @@ def send_request():
     request_note = notes
     request_datetime = datetime.now() 
     crud.create_request(from_user,to_user,child_id,request_note,"","S",request_datetime)
-
-    buddies = userqueries.get_user_buddies(session['username'])
     # send_message.send_message(session['send_request_phone'],request_note)
-    return render_template('user.html',buddies=buddies,number = len(buddies))
+    flash (f"Request message send to {session['requesting_phone_number']} ")
+    return redirect('/') 
 
 
 """ Return JSON of the login user and the user to whom request is sent """
@@ -324,10 +349,18 @@ def accept_deny_individual_request():
     request_note = notes
     request_datetime = datetime.now() 
     crud.create_request(from_user,to_user,child_id,request_note,"",request_code,request_datetime)
-    userqueries.respond_denial_to_others(from_user,to_user)
     # send_message.send_message(session['send_decision_phone'],request_note)
-    buddies = userqueries.get_user_buddies(session['username'])
-    return render_template('user.html',buddies=buddies,number = len(buddies))
+    flash (f"Request message send to {session['requesting_phone_number']} ")
+    if request_code == "A":
+        userqueries.respond_denial_to_others(from_user,to_user)
+        buddies = userqueries.get_user_buddies(session['username'])
+        buddy = crud.get_user_by_id(buddies[0].user_id)
+        session['buddy_phone']= buddy.phone_number
+        session['buddy_id'] = buddy.user_id
+        request_user_children = buddy.children
+        return render_template('user.html',buddies=buddies,number = len(buddies),request_user_children=request_user_children)
+    return redirect('/') 
+
    
 
 
