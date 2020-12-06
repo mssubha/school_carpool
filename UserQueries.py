@@ -98,15 +98,40 @@ def get_carpool_closeby_filter(email,smoking,pets,distance,grade):
 
 def get_requests_recieved(email):
     user_id = crud.get_user_by_email(email).user_id
-    sql = """SELECT user_id, household1, address_street, address_city, address_state , phone_number, email,
-             address_latitude, address_longitude
+    # sql = """SELECT from_user from requests where request_status = 'S' and to_user = :user_id"""
+    # carpool_requests_users = db.session.execute(sql, {"user_id": user_id}).fetchall()
+
+    # carpool_requests = User.query.filter(User.user_id.in_(carpool_requests_users))
+
+    # sql = """SELECT user_id, household1, address_street, address_city, address_state , phone_number, email,
+    #          address_latitude, address_longitude, address_geo
+    #          FROM users 
+    #          WHERE users.user_id in 
+    #          (SELECT from_user from requests where request_status = 'S' and to_user = :user_id)"""
+
+    sql = """SELECT user_id
              FROM users 
              WHERE users.user_id in 
              (SELECT from_user from requests where request_status = 'S' and to_user = :user_id)"""
-  
-    carpool_requests = db.session.execute(sql, {"user_id": user_id}).fetchall()
+
+    carpool_requests = []
+    carpool_requests_id = db.session.execute(sql, {"user_id": user_id}).fetchall()
+    for request_id in carpool_requests_id:
+        carpool_requests.append(crud.get_user_by_id(request_id))
     return(carpool_requests)
 
+
+def get_request_recieved_map(email):
+    user_id = crud.get_user_by_email(email).user_id
+    sql = """SELECT user_id, household1, address_street, address_city, address_state , phone_number, email,
+             address_latitude, address_longitude, address_geo
+             FROM users 
+             WHERE users.user_id in 
+             (SELECT from_user from requests where request_status = 'S' and to_user = :user_id)
+             AND users.user_id <> :user_id"""
+
+    carpool_requests = db.session.execute(sql, {"user_id": user_id}).fetchall()
+    return(carpool_requests)
 
 def respond_denial_to_others(from_user,to_user):
     

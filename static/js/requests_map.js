@@ -24,7 +24,7 @@ function initMap() {
   //
   // If you want to see what `/api/carpoolers` returns, you should check `server.py`
   // $.get('/api/carpoolers', (carpoolers) => {
-  $.get('/carpoolers/json', (carpoolers) => {
+  $.get('/requests/json', (carpoolers) => {
     for (const carpooler of carpoolers) {
       // Define the content of the infoWindow
       const userInfoContent = (`

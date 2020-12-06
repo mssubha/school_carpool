@@ -122,21 +122,43 @@ def carpoolers_info():
             "userLat": carpooler.address_latitude,
             "userLong": carpooler.address_longitude,
         }
-        for carpooler in userqueries.get_user_buddies(session['username'])
+        for carpooler in userqueries.get_request_recieved_map(session['username'])
+    ]
+
+    return jsonify(carpoolers)
+
+@app.route("/requests/json")
+def requests_info():
+    """JSON information about carpool buddies."""
+
+    carpoolers = [
+        {
+            "user_id": carpooler.user_id,
+            "name": carpooler.household1,
+            "street": carpooler.address_street,
+            "city": carpooler.address_city,
+            "phone": carpooler.phone_number,
+            "email": carpooler.email,
+            "userLat": carpooler.address_latitude,
+            "userLong": carpooler.address_longitude,
+        }
+        for carpooler in userqueries.get_requests_recieved(session['username'])
     ]
 
     return jsonify(carpoolers)
 
 
+
 @app.route("/back_user_page")
 def display_user_page():
     return render_template('user.html',buddies=[],number = 0,request_user_children=[])
-    
+
 @app.route("/back_all_carpoolers")
 def display_all_carpoolers():
     all_carpoolers= []
     all_carpoolers = return_all_carpoolers()
     return render_template('search.html', carpoolers = all_carpoolers)
+
 
 def return_all_carpoolers():
     session['smoking_preference'] = 0
@@ -275,7 +297,6 @@ def send_request():
     return render_template('search.html', carpoolers = carpoolers)
     
 
-
 """ Return JSON of the login user and the user to whom request is sent """
 @app.route("/request_peson/json")
 def request_person_info():
@@ -315,6 +336,9 @@ def request_person_info():
 def show_requests():
     """ Display all carpoolers who have sent you a request to carpool"""
     carpoolers = userqueries.get_requests_recieved(session['username'])
+    user_geo = crud.get_user_by_email(session['username']).address_geo
+    for carpooler in carpoolers:
+        carpooler.address_longitude = userqueries.distance_between_addresses(user_geo,carpooler.address_geo)
     return render_template('requests.html', carpoolers = carpoolers)
 
 
