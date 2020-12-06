@@ -23,6 +23,10 @@ form label{
   font-weight:bold;
 }
 
+.table-small{
+  font-size: 13px;
+}
+
 .success {
   padding: 20px;
   background-color: #4CAF50;;

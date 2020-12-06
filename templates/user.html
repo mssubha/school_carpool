@@ -70,8 +70,10 @@
       <div class="row top-buffer">
         <div class="col text-left">
           <form action="/all_carpoolers" method="POST"> 
-            <div class="search">   
-                <input type ="submit" name="search" value="Search for Carpool">
+            <div class="search"> 
+              <button type="submit" class="btn btn-secondary request text-center " 
+              name = "search" value = "Search for Carpool">Search for Carpool</button>  
+                <!-- <input type ="submit" name="search" value="Search for Carpool"> -->
             </div>   
           </form>   
         </div>
@@ -79,7 +81,9 @@
         <div class="col text-left">
           <form action="/accept_deny_request" method="POST"> 
             <div class="search">   
-                <input type ="submit" name="response" value="Accept Deny Request">
+              <button type="submit" class="btn btn-secondary request text-center " 
+              name = "response" value = "Accept Deny Request">Accept Deny Request</button> 
+                <!-- <input type ="submit" name="response" value="Accept Deny Request"> -->
             </div>   
           </form>
         </div>
