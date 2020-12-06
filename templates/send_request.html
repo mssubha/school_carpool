@@ -22,8 +22,13 @@
     {% endfor %}
   </ul> 
 
-<div class = "map" id="request_map"></div>
-  
+<!-- <div class = "map" id="request_map"></div> -->
+<div class="col text-center">
+  <div id="request_map" class="z-depth-1-half map-container-6" style="height: 400px">
+    <iframe 
+    frameborder="0" style="border:0" allowfullscreen></iframe>
+  </div>
+</div>
 
 <!-- <form id = "individual_request_form" action="/send_request" method="POST">  -->
   <form id = "individual_request_form" action="/send_request_phone" method="POST"> 

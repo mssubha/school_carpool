@@ -7,56 +7,85 @@
 <link rel="stylesheet" type="text/css" href="/static/css/maps.css" />
 <link rel="stylesheet" href="/static/css/user.css" />
 
-
 <script src="/static/js/search_map.js"></script>
 
 {% endblock %}
 
 {% block body %}
-<h2> Carpoolers close to your address:</h2>
+<div class = "container">
+  <div class="row top-buffer">
+    <div class="col text-left">
+      <form action="/search_filter_carpool" method="POST"> 
+        <div class="search">   
+          <input type="checkbox" id="search_smoking" name="search_smoking" value= 'YES'>
+          <label for="search_smoking"> No Smoking</label>
 
+          <input type="checkbox" id="search_pets" name="search_pets" value= 'YES'>
+          <label for="search_option"> No Pets</label>
+          
+          <label for="distance">Distance in miles:</label>
+              <select name="distance" id="distance">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="ANY" selected="selected">ANY</option>
+              </select>
+              
+          <label for="grade">Child Grade:</label>
+              <select name="grade" id="grade">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="ANY" selected="selected">ANY</option>
+              </select>
 
+          <button type="submit" class="btn btn-secondary leave-space-left" 
+          name = "search" value = "Search for Carpool">Search for Carpooler</button>
+        </div>   
+      </form>   
+    </div>
+  </div>
 
-<form action="/search_filter_carpool" method="POST"> 
-  <div class="search">   
+  <div class="row top-buffer">
+    <div class="col text-left">
+      <h5> Carpoolers close to your address:</h5>
 
-    <input type="checkbox" id="search_smoking" name="search_smoking" value= 'YES'>
-    <label for="search_smoking"> No Smoking</label>
+        <form id = "request_form" action="/send_carpool_request" method="POST"> 
+          <ul>
+            {% for carpooler in carpoolers %}
+              <ul>
+                <input type="radio"  name="carpoolrequest" value = {{carpooler.user_id}} >
+                {{carpooler.household1}}  {{carpooler.address_street}}  {{carpooler.address_city}} {{carpooler.phone_number}} {{carpooler.email}}  {{carpooler.address_longitude}} {{carpooler.latitude}}
+              </ul>
+            {% endfor %}
+          </ul>
+        
+          <button type="submit" class="btn btn-secondary request" 
+          name = "response" value = "Send Request">Send Request</button>
 
-    <input type="checkbox" id="search_pets" name="search_pets" value= 'YES'>
-    <label for="search_option"> No Pets</label>
-    <br>
-    <label for="distance">Distance in miles:</label>
-        <select name="distance" id="distance">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="ANY" selected="selected">ANY</option>
-        </select>
-    
-        <label for="grade">Child Grade:</label>
-        <select name="grade" id="grade">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="ANY" selected="selected">ANY</option>
-        </select>
+          <!-- <div class="request">   
+                <input type ="submit" name="response" value="Send Request">
+          </div>    -->
+        </form> 
+    </div>
 
-    <br><br>
+    <div class="col text-center">
+      <div id="search_map" class="z-depth-1-half map-container-6" style="height: 400px">
+        <iframe 
+        frameborder="0" style="border:0" allowfullscreen></iframe>
+      </div>
+    </div>
 
-      <input type ="submit" name="search" value="Search for Carpool">
-  </div>   
-</form>   
+    </div>
+</div>
 
-<br>
-<br>
+{% endblock %}
 
-<div class = "map" id="search_map"></div>
 
 <!-- <form id = "request_form" action="/individual_request" method="POST">  -->
-  <form id = "request_form" action="/send_carpool_request" method="POST"> 
+  <!-- <form id = "request_form" action="/send_carpool_request" method="POST"> 
 <ul>
     {% for carpooler in carpoolers %}
       <ul>
@@ -69,15 +98,4 @@
 
     {% endfor %}
 
-</ul>
-
-    <div class="request">   
-        <input type ="submit" name="response" value="Send Request">
-    </div>   
-  </form> 
-
-  
-
-{% endblock %}
-
-
+</ul> 

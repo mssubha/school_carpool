@@ -46,10 +46,10 @@ nav a:hover, nav button:hover {
 } */
 
 
-.map, #search_map {
+/* .map, #search_map {
   width: 50%;
   height: 50%;
-}
+} */
 
 .map-container-6{
   overflow:hidden;

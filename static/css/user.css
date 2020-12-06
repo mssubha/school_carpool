@@ -103,6 +103,10 @@ div.window-content {
   cursor: pointer;
   transition: 0.3s;
 } 
+
+.leave-space-left{
+  margin-left: 100px;
+}
   
 .btn-secondary:hover {
   color: #d0d8e1;

@@ -239,8 +239,14 @@ def send_request():
     request_datetime = datetime.now() 
     crud.create_request(from_user,to_user,child_id,request_note,"","S",request_datetime)
     # send_message.send_message(session['send_request_phone'],request_note)
+    carpoolers = userqueries.get_carpool_closeby_filter(session['username'],0,0,25,0)
+    user_geo = crud.get_user_by_email(session['username']).address_geo
+    for carpooler in carpoolers:
+        carpooler.address_longitude = userqueries.distance_between_addresses(user_geo,carpooler.address_geo)
+        carpooler.latitude = carpooler.car[0].seats
     flash (f"Request message send to {session['requesting_phone_number']} ")
-    return redirect('/') 
+    return render_template('search.html', carpoolers = carpoolers)
+    
 
 
 """ Return JSON of the login user and the user to whom request is sent """

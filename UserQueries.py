@@ -40,7 +40,7 @@ def get_carpool_closeby(email, distance,grade):
         # return User.query.filter(func.ST_DistanceSphere(User.address_geo, user_geo) < distance_in_meters).all()
         all_users =  User.query.filter(func.ST_DistanceSphere(User.address_geo, user_geo) < distance_in_meters).all()
         buddies = get_user_buddies(email)
-        
+        login_user = crud.get_user_by_email(email)
         buddies_email= []
         for buddy in range(len(buddies)):
             buddies_email.append(buddies[buddy][6])
@@ -48,14 +48,15 @@ def get_carpool_closeby(email, distance,grade):
         return_users = []
         return_users_email = []
         for user in all_users:
-            if (user.email not in buddies_email and user.email != email):
-                if grade > 0 :
-                    for child in user.children:
-                        if child.grade == grade and user.email not in return_users_email :
-                            return_users_email.append(user.email)
-                            return_users.append(user)
-                else:
-                    return_users.append(user)
+            if not_already_requested(login_user.user_id,user.user_id):
+                if (user.email not in buddies_email and user.email != email):
+                    if grade > 0 :
+                        for child in user.children:
+                            if child.grade == grade and user.email not in return_users_email :
+                                return_users_email.append(user.email)
+                                return_users.append(user)
+                    else:
+                        return_users.append(user)
 
         return(return_users)
 
@@ -120,6 +121,7 @@ def respond_denial_to_others(from_user,to_user):
 
     return
 
+
 def cancel_carpool(from_user,to_user,message):
 
     sql = """UPDATE requests
@@ -132,6 +134,20 @@ def cancel_carpool(from_user,to_user,message):
     db.session.execute(sql, {"to_user": from_user, "from_user":to_user, "message":message})
     db.session.commit()
     return
+
+
+def not_already_requested(login_user_id,carpooler_user_id):
+    sql = """SELECT *
+             FROM requests 
+             WHERE from_user = :login_user_id
+             AND to_user = :carpooler_user_id
+             AND request_status = 'S'
+             """ 
+
+
+    requests_sent = db.session.execute(sql, {"login_user_id": login_user_id, "carpooler_user_id":carpooler_user_id}).fetchall()
+
+    return (len(requests_sent)==0)
 
 if __name__ == '__main__':
     from server import app
