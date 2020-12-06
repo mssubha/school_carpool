@@ -331,16 +331,28 @@ def request_person_info():
     return jsonify(carpoolers)
 
 
+@app.route('/back_requests_page')
+def show_requests_page():
+    carpoolers = show_requests_details()
+    return render_template('requests.html', carpoolers = carpoolers)
+
 """ Display all carpoolers who have sent you a request to carpool"""
 @app.route('/accept_deny_request', methods=['POST'])
 def show_requests():
     """ Display all carpoolers who have sent you a request to carpool"""
+    carpoolers = show_requests_details()
+    # carpoolers = userqueries.get_requests_recieved(session['username'])
+    # user_geo = crud.get_user_by_email(session['username']).address_geo
+    # for carpooler in carpoolers:
+    #     carpooler.address_longitude = userqueries.distance_between_addresses(user_geo,carpooler.address_geo)
+    return render_template('requests.html', carpoolers = carpoolers)
+
+def show_requests_details():
     carpoolers = userqueries.get_requests_recieved(session['username'])
     user_geo = crud.get_user_by_email(session['username']).address_geo
     for carpooler in carpoolers:
         carpooler.address_longitude = userqueries.distance_between_addresses(user_geo,carpooler.address_geo)
-    return render_template('requests.html', carpoolers = carpoolers)
-
+    return carpoolers
 
 """ Choose a carpooler to whom the user will respond to"""
 @app.route('/individual_accept_deny', methods= ['POST'])
