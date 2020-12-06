@@ -128,10 +128,17 @@ def carpoolers_info():
     return jsonify(carpoolers)
 
 
-""" Display all carpoolers to whom you can send request"""
-@app.route('/all_carpoolers' , methods=['POST'])
-def search_all_carpool():
-    """ List all carpoolers available without any filter"""
+@app.route("/back_user_page")
+def display_user_page():
+    return render_template('user.html',buddies=[],number = 0,request_user_children=[])
+    
+@app.route("/back_all_carpoolers")
+def display_all_carpoolers():
+    all_carpoolers= []
+    all_carpoolers = return_all_carpoolers()
+    return render_template('search.html', carpoolers = all_carpoolers)
+
+def return_all_carpoolers():
     session['smoking_preference'] = 0
     session['pets_preference'] = 0
     session['distance'] = 25
@@ -141,8 +148,28 @@ def search_all_carpool():
     for carpooler in carpoolers:
         carpooler.address_longitude = userqueries.distance_between_addresses(user_geo,carpooler.address_geo)
         carpooler.latitude = carpooler.car[0].seats
+    
+    return  carpoolers
+
+""" Display all carpoolers to whom you can send request"""
+@app.route('/all_carpoolers' , methods=['POST'])
+def search_all_carpool():
+    """ List all carpoolers available without any filter"""
+    all_carpoolers= []
+    all_carpoolers = return_all_carpoolers()
+    return render_template('search.html', carpoolers = all_carpoolers)
+
+    # session['smoking_preference'] = 0
+    # session['pets_preference'] = 0
+    # session['distance'] = 25
+    # session['grade'] = 0
+    # carpoolers = userqueries.get_carpool_closeby_filter(session['username'],0,0,25,0)
+    # user_geo = crud.get_user_by_email(session['username']).address_geo
+    # for carpooler in carpoolers:
+    #     carpooler.address_longitude = userqueries.distance_between_addresses(user_geo,carpooler.address_geo)
+    #     carpooler.latitude = carpooler.car[0].seats
         
-    return render_template('search.html', carpoolers = carpoolers)
+    # return render_template('search.html', carpoolers = carpoolers)
 
 
 """ Display carpoolers with filter to whom you can send request"""

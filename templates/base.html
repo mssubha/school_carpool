@@ -59,22 +59,27 @@
   </head>
   <body>
 
-    <!-- <nav class="navbar navbar-expand-sm bg-light justify-content-center "> -->
-    <nav class="navbar navbar-expand-md nav-transparent w-100">
+    <!-- <nav class="navbar navbar-expand-sm bg-light justify-content-center w-100"> -->
+    <nav class="navbar navbar-expand-md nav-transparent  w-100">
       <div class="container-fluid">
 
       <a class="navbar-brand" href="#" style="max-width: 5%;">
         <img src="static/img/carpool.jpg" class="img-fluid">
       </a>
 
-       <a class = "navbar-header" href="#">SchoolPool - FUN & ENVIRONMENTALLY FRIENDLY RIDE TO SCHOOL</a>
+
+      <a class = "navbar-header" href="#">SchoolPool - FUN & ENVIRONMENTALLY FRIENDLY RIDE TO SCHOOL</a>
        
       <ul class="navbar-nav">
-    
+
+       
+        {% block nav %}{% endblock %}
+
         <li class="nav-item">
           <a class="nav-link" href="/" style="max-width: 5%;">HOME</a>
         </li>
         
+      
         <li class="nav-item">
           <a class="nav-link" href="/logout">LOGOUT</a>
         </li>

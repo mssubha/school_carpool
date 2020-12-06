@@ -11,6 +11,14 @@
 
 {% endblock %}
 
+{% block nav %}
+<li class="nav-item text-left">
+  <li class="nav-item">
+    <a class="nav-link" href="/back_user_page" style="max-width: 5%;">BACK</a>
+  </li>
+</li>
+{% endblock %}
+
 {% block body %}
 <div class = "container">
   <div class="row top-buffer">
@@ -61,7 +69,6 @@
                 <th class="w-15">Name</th>
                 <th class="w-40">Address</th>
                 <th class="w-15">Phone</th>
-                <!-- <th class="w-10">Email</th> -->
                 <th class="w-5">Distance</th>
               </tr>
             </thead>
@@ -69,12 +76,10 @@
             <tbody>
               {% for carpooler in carpoolers %}
               <tr>
-                <!-- <th scope="row">1</th> -->
                 <td> <input type="radio"  name="carpoolrequest" value = {{carpooler.user_id}} > </td> 
                 <td> {{carpooler.household1}} </td>
                 <td> {{carpooler.address_street}}, {{carpooler.address_city}}  </td>
                 <td>{{carpooler.phone_number}}  </td>
-                <!-- <td> {{carpooler.email}} </td> -->
                 <td> {{carpooler.address_longitude}} </td>
             
               </tr>
