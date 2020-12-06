@@ -7,39 +7,77 @@
 <link rel="stylesheet" type="text/css" href="/static/css/maps.css" />
 <link rel="stylesheet" href="/static/css/user.css" />
 
-
 <script src="/static/js/requests_map.js"></script>
 
 {% endblock %}
 
+{% block nav %}
+<li class="nav-item text-left">
+  <li class="nav-item">
+    <a class="nav-link" href="/back_user_page" style="max-width: 5%;">BACK</a>
+  </li>
+</li>
+{% endblock %}
+
 {% block body %}
-<h2> Carpoolers who have sent request:</h2>
+    <div class = "container">
+      <div class="row top-buffer">
+        <div class="col text-left">
+          <h5> Carpoolers who have sent request:</h5>
+          <form id = "request_form" action="/individual_accept_deny" method="POST"> 
 
-<div class = "map" id="requests_map"></div>
+            <table class="table table-striped table-sm table-small">
+              <thead>
+                <tr>
+                  <th class="w-5"></th>
+                  <th class="w-15">Name</th>
+                  <th class="w-40">Address</th>
+                  <th class="w-15">Phone</th>
+                  <th class="w-5">Distance</th>
+                </tr>
+              </thead>
+      
+              <tbody>
+                {% for carpooler in carpoolers %}
+                <tr>
+                  <td> <input type="radio"  name="carpoolrequest" value = {{carpooler.user_id}} > </td> 
+                  <td> {{carpooler.household1}} </td>
+                  <td> {{carpooler.address_street}}, {{carpooler.address_city}}  </td>
+                  <td>{{carpooler.phone_number}}  </td>
+                  <td> {{carpooler.address_longitude}} </td>
+              
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
 
-<form id = "request_form" action="/individual_accept_deny" method="POST"> 
+            <div class="row top-buffer">
+              <div class="col text-center">
+                <button type="submit" class="btn btn-secondary request text-center " 
+                name = "response" value = "Accept Deny Request">Accept Deny Request</button>
+              </div>
+            </div>
+          </form> 
+        </div>
 
-<ul>
-    {% for carpooler in carpoolers %}
-      <ul>
-        
-        <input type="radio"  name="carpoolrequest" value = {{carpooler.user_id}} >
+        <div class="col text-center">
+          <div id="requests_map" class="z-depth-1-half map-container-6" style="height: 400px">
+            <iframe 
+            frameborder="0" style="border:0" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
 
-        {{carpooler.household1}} {{carpooler.address_street}}  {{carpooler.address_city}} {{carpooler.phone_number}} {{carpooler.email}} 
-       
-      </ul>
+{% endblock %}
 
-    {% endfor %}
 
-</ul>
 
-    <div class="request">   
-        <input type ="submit" name="response" value="Accept Deny Request">
-    </div>   
-  </form> 
+        <!-- <div class = "map" id="requests_map"></div> -->
+
 
   
 
-{% endblock %}
+
 
 

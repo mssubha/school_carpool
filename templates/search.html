@@ -108,20 +108,3 @@
 </div>
 
 {% endblock %}
-
-
-<!-- <form id = "request_form" action="/individual_request" method="POST">  -->
-  <!-- <form id = "request_form" action="/send_carpool_request" method="POST"> 
-<ul>
-    {% for carpooler in carpoolers %}
-      <ul>
-        
-        <input type="radio"  name="carpoolrequest" value = {{carpooler.user_id}} >
-
-        {{carpooler.household1}}  {{carpooler.address_street}}  {{carpooler.address_city}} {{carpooler.phone_number}} {{carpooler.email}}  {{carpooler.address_longitude}} {{carpooler.latitude}}
-       
-      </ul>
-
-    {% endfor %}
-
-</ul> 
