@@ -38,7 +38,7 @@ def get_carpool_closeby(email, distance,grade):
         distance_in_meters = distance * 1609.34
         user_geo = crud.get_user_geo(email)
         # return User.query.filter(func.ST_DistanceSphere(User.address_geo, user_geo) < distance_in_meters).all()
-        all_users =  User.query.filter(func.ST_DistanceSphere(User.address_geo, user_geo) < distance_in_meters).all()
+        all_users =  User.query.filter(func.ST_DistanceSphere(User.address_geo, user_geo) <= distance_in_meters).all()
         buddies = get_user_buddies(email)
         login_user = crud.get_user_by_email(email)
         buddies_email= []

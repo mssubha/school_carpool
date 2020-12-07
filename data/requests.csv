@@ -1,7 +1,2 @@
 from_user,to_user,child_id,request_note,decision_note,request_status,request_datetime
-1,2,1,from 1 to 2,,S,2020-10-21 02:37:21
-2,4,2,from 2 to 4,,S,2020-10-22 09:21:21
-2,6,9,from 2 to 6,,S,2020-10-22 11:21:21
-1,2,1,from 1 to 2,2 accepted,A,2020-10-24 17:37:21
-2,4,2,from 2 to 4,4 denied,D,2020-10-23 09:21:21
-2,6,9,from 2 to 6,6 accepted,A,2020-10-23 11:51:21
+4,3,1,,,S,2020-10-21 02:37:21

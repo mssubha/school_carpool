@@ -92,7 +92,7 @@ class Request(db.Model):
 
 # request1 = Request(from_user=1,to_user=2,child_id =1,request_note="can we?",decision_note = " ",request_status = "S")
 
-def connect_to_db(flask_app, db_uri='postgresql:///schoolpool', echo=True):
+def connect_to_db(flask_app, db_uri='postgresql:///dbschoolpool', echo=True):
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
     flask_app.config['SQLALCHEMY_ECHO'] = echo
     flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

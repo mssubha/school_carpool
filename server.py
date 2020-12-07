@@ -101,7 +101,7 @@ def send_additional_message():
         flash (f"Message successfully sent to {session['buddy_phone']} ")
         return render_template('search.html', carpoolers = carpoolers)
     else:
-        # send_message.send_message(session['buddy_phone'],message)
+        send_message.send_message(session['buddy_phone'],message)
         flash (f"Message successfully sent to {session['buddy_phone']} ")
         return redirect('/') 
             
@@ -293,7 +293,7 @@ def send_request():
     for carpooler in carpoolers:
         carpooler.address_longitude = userqueries.distance_between_addresses(user_geo,carpooler.address_geo)
         carpooler.latitude = carpooler.car[0].seats
-    flash (f"Request message send to {session['requesting_phone_number']} ")
+    flash (f"Request message sent to {session['requesting_phone_number']} ")
     return render_template('search.html', carpoolers = carpoolers)
     
 
@@ -346,6 +346,7 @@ def show_requests():
     # for carpooler in carpoolers:
     #     carpooler.address_longitude = userqueries.distance_between_addresses(user_geo,carpooler.address_geo)
     return render_template('requests.html', carpoolers = carpoolers)
+
 
 def show_requests_details():
     carpoolers = userqueries.get_requests_recieved(session['username'])
@@ -419,8 +420,8 @@ def accept_deny_individual_request():
     request_note = notes
     request_datetime = datetime.now() 
     crud.create_request(from_user,to_user,child_id,request_note,"",request_code,request_datetime)
-    # send_message.send_message(session['send_decision_phone'],request_note)
-    flash (f"Request message send to {session['requesting_phone_number']} ")
+    send_message.send_message(session['send_decision_phone'],request_note)
+    flash (f"Request message sent to {session['requesting_phone_number']} ")
     if request_code == "A":
         userqueries.respond_denial_to_others(from_user,to_user)
         buddies = userqueries.get_user_buddies(session['username'])
@@ -462,7 +463,11 @@ def user_carpoolers():
 def logout():  
     return render_template('logout.html')
 
-
+# 2,4,2,from 2 to 4,,S,2020-10-22 09:21:21
+# 2,6,9,from 2 to 6,,S,2020-10-22 11:21:21
+# 1,2,1,from 1 to 2,2 accepted,A,2020-10-24 17:37:21
+# 2,4,2,from 2 to 4,4 denied,D,2020-10-23 09:21:21
+# 2,6,9,from 2 to 6,6 accepted,A,2020-10-23 11:51:21
 
 if __name__ == '__main__':
     connect_to_db(app)

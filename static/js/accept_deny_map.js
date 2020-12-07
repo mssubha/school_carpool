@@ -6,7 +6,7 @@ let labelIndex = 0;
 
 function initMap() {
     map = new google.maps.Map(document.getElementById("accept_deny_map"), {
-    center: {lat: 38.00784, lng: -122.522375},
+    center: {lat: 38.094850, lng: -122.571530}, 
     scrollwheel: false,
     zoom: 13,
     zoomControl: true,

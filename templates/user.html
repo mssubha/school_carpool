@@ -11,6 +11,10 @@
 
 {% endblock %}
 
+{% block nav %}
+
+{% endblock %}
+
 {% block body %}
  
 <div class = "container">
@@ -21,13 +25,13 @@
         
           {% for buddy in buddies %}
             
-              <h5><u> {{buddy.household1}} is your carpool buddy. </u></h4>
-              <h5> Address: {{buddy.address_street}}, {{buddy.address_city}}</h5> 
-              <h5> Email   :  {{buddy.email}} </h5>
-              <h5> Phone   : {{buddy.phone_number}}</h5>
+              <h6><u> {{buddy.household1}} is your carpool buddy. </u></h6>
+              <h6> Address: {{buddy.address_street}}, {{buddy.address_city}}</h6> 
+              <h6> Email   :  {{buddy.email}} </h6>
+              <h6> Phone   : {{buddy.phone_number}}</h6>
             
           {% endfor %}
-            <table class="table table-striped table-sm">
+            <table class="table table-striped table-sm table-small">
               <thead>
                 <tr>
                   <th class="w-10">#</th>
@@ -98,8 +102,7 @@
        <form action = "/send_additional_message" method="POST"> 
           <div class="row ">
             <div class="col text-center">
-                <textarea class = "transparent-input" id="additional_note" name="additional_note" rows="2" cols="40" rounded>
-                  Message
+                <textarea class = "transparent-input text-left" id="additional_note" name="additional_note" rows="2" cols="40" rounded>Message
                 </textarea><br>
             </div>
       
