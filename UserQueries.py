@@ -133,6 +133,7 @@ def get_request_recieved_map(email):
     carpool_requests = db.session.execute(sql, {"user_id": user_id}).fetchall()
     return(carpool_requests)
 
+
 def respond_denial_to_others(from_user,to_user):
     
     sql = """UPDATE requests
@@ -173,6 +174,19 @@ def not_already_requested(login_user_id,carpooler_user_id):
     requests_sent = db.session.execute(sql, {"login_user_id": login_user_id, "carpooler_user_id":carpooler_user_id}).fetchall()
 
     return (len(requests_sent)==0)
+
+
+def get_additional_message(login_user,request_user):
+    sql = """SELECT request_note
+                FROM requests
+                WHERE from_user = :request_user
+                AND to_user = :login_user """
+    message = db.session.execute(sql, {"login_user": login_user, "request_user":request_user}).fetchall()
+    if len(message) > 0:
+        return str(message[0])[2:-3]
+    else:
+        return ("")
+
 
 if __name__ == '__main__':
     from server import app

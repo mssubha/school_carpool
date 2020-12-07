@@ -278,7 +278,7 @@ def display_individual_user():
 @app.route('/send_request_phone', methods=['POST'])
 def send_request():
     """ Send a carpool request to a carpooler through app and twilio"""
-    notes = request.form.get('request_note')
+    notes = request.form.get('request_note').strip()
 
     login_user = crud.get_user_by_email(session['username'])
     from_user = login_user.user_id
@@ -364,7 +364,8 @@ def accept_deny_request():
     request_user_children = request_user.children
     login_user = crud.get_user_by_email( session['username'])
     session['accept_deny_userid'] = request_user_id
-    return render_template('accept_deny.html', request_user = request_user, request_user_children = request_user_children,login_user=login_user)
+    additional_message = userqueries.get_additional_message(session['user_id'],request_user.user_id)
+    return render_template('accept_deny.html', request_user = request_user, request_user_children = request_user_children,login_user=login_user,additional_message=additional_message,message_len=len(additional_message))
 
 
 """ Return JSON of the login user and the user whose request is viewed"""

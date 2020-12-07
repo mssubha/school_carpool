@@ -26,7 +26,7 @@
       <h5> {{ login_user.household1 }}, {{ request_user.household1 }} sent you a request to carpool </h5><br>
       <h5> Address: {{request_user.address_street}}, {{request_user.address_city}}</h5> 
       <h5> Email: {{request_user.email}}           Phone: {{request_user.phone_number}} </h5><br>
-    
+      
       <table class="table table-striped table-sm">
         <thead>
           <tr>
@@ -50,6 +50,11 @@
           {% endfor %}
         </tbody>
       </table>
+
+      {% if message_len > 0 %}
+      <h5> Message: {{additional_message}}</h5>
+      {% endif %}
+      
     </div>
 
     <div class="col text-center">
@@ -68,7 +73,7 @@
     <div class="row top-buffer">
       <div class="col text-center">
           <textarea class = "transparent-input" id="decission_note" name="decission_note" rows="2" cols="50" rounded>
-            additional information 
+            send additional information 
           </textarea><br>
         </div>
 
