@@ -5,7 +5,7 @@ SchoolPool is a web application focused on driving children safely to school whi
 ## Contents
 * [Technologies & Stack](#techstack)
 * [Set-up & Installation](#installation)
-
+* [About the developer](#developer)
 
 ## <a name="techstack"></a> Technologies and Stack
 **Backend:**
@@ -65,4 +65,8 @@ Run the app from the command line:
 ```
 $ python3 server.py
 ```
+
+## <a name="developer"></a> About the developer
+ Subha has a Bachelor’s in Computer Engineering from India and Master’s in Computer Science from San Francisco State University. She worked as an Analyst programmer trainee for a year in RAMCO Systems (https://www.ramco.com). She has two years experience as a software developer in SQL and .NET in Streamline Solutions now acquired by efi (https://www.efi.com). Since March 2018, she has been a freelance software tester in Applause (https://www.applause.com). She can be found on [LinkedIn](https://www.linkedin.com/in/mssubha/)
+
 
