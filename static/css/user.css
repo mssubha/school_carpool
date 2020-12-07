@@ -43,6 +43,13 @@ form label{
   font-size: 20px;
 }
 
+.small_h6 h6 {
+  color: black !important; 
+  font-weight: bold;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 17px;
+}
+
 .nav-link{
   color: black !important; 
   font-weight: bold;
