@@ -49,7 +49,7 @@ def get_carpool_closeby(email, distance,grade):
         return_users_email = []
         for user in all_users:
             if not_already_requested(login_user.user_id,user.user_id):
-                if (user.email not in buddies_email and user.email != email):
+                if (user.email not in buddies_email and user.email != email and get_buddy_count(user.user_id) == 0):
                     if grade > 0 :
                         for child in user.children:
                             if child.grade == grade and user.email not in return_users_email :
@@ -186,6 +186,16 @@ def get_additional_message(login_user,request_user):
         return str(message[0])[2:-3]
     else:
         return ("")
+
+
+def get_buddy_count(user_id):
+    sql = """SELECT COUNT(*)
+                FROM requests
+                WHERE from_user = :user_id
+                OR to_user = :user_id
+                AND request_status = 'A' """
+    buddy_count = db.session.execute(sql, {"user_id": user_id}).fetchall()
+    return (buddy_count[0][0])
 
 
 if __name__ == '__main__':
